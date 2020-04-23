@@ -7,6 +7,8 @@
 #include "Terrain.hpp"
 
 
+// add class for text and maybe lvls 
+
 int main()
 {
 	//test consts
@@ -17,6 +19,7 @@ int main()
 
 	const float maxImpactX = 0.01f;
 	const float maxImpactY = 0.1f;
+	const float maxRotation = 2.5f;
 
 
 	Lander lander(1500,50, gravity);
@@ -160,7 +163,7 @@ int main()
 
 			if (lander.fLanderSprite.getGlobalBounds().intersects(map.fTerrainSprite.getGlobalBounds()))
 			{
-				if (landerMovementVec.x < maxImpactX && landerMovementVec.y < maxImpactY)
+				if (landerMovementVec.x < maxImpactX && landerMovementVec.y < maxImpactY && lander.fLanderRotation < maxRotation)
 				{
 					landerMovementVec.x = 0;
 					landerMovementVec.y = 0;
