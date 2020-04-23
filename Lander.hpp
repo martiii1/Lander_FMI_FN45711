@@ -7,6 +7,8 @@ class Lander
 public:
 	const int pi = 3.14159;
 	Lander(float thrust,float mass,float gravity);
+	void CalcVecs();
+
 
 	sf::Texture fLanderTexute;
 	sf::Sprite fLanderSprite;

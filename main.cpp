@@ -9,13 +9,15 @@
 
 int main()
 {
+	//const float slowTime = 100.f;
+
 	//test consts
 	const float pi = 3.14159f;
 	const int gameWidth = 1024;
 	const int gameHeight = 860;
 	const float gravity = 9.8;
 
-	Lander lander(100,50, gravity);
+	Lander lander(1000,50, gravity);
 	Terrain map(gameWidth,gameHeight);
 
 	sf::Vector2f landerMovementVec(0.f, 0.f);
@@ -85,7 +87,7 @@ int main()
 				break;
 			}
 
-			// if enter is pressed the game begins/restarted
+			// if enter is pressed the game begins/restarts
 			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
 			{
 				if (!isRunning)
@@ -107,10 +109,9 @@ int main()
 			//detect inputs
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
 			{
-				lander.fLanderThrustVector.x = std::sin(lander.fLanderRotation * pi / 180) * lander.fThrust;
-				lander.fLanderThrustVector.y = std::cos(lander.fLanderRotation * pi / 180) * lander.fThrust * (-1.f); 
+				lander.CalcVecs();
 
-				landerMovementVec += lander.fLanderThrustVector * deltaT;
+				landerMovementVec += (landerMovementVec + lander.fLanderThrustVector ) * deltaT * deltaT;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -133,9 +134,12 @@ int main()
 			}
 
 
-			// add the movement
+
 			lander.fLanderSprite.setRotation(lander.fLanderRotation);
-			landerMovementVec = (landerMovementVec + gravityVec) * deltaT; // fix gravity
+			lander.CalcVecs();
+		
+
+			landerMovementVec += (landerMovementVec + gravityVec) * deltaT * deltaT; // not 100% realistic but its better.
 			
 			lander.fLanderSprite.move(landerMovementVec);
 
