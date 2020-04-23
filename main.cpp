@@ -9,16 +9,14 @@
 
 int main()
 {
-	//const float slowTime = 100.f;
-
 	//test consts
 	const float pi = 3.14159f;
 	const int gameWidth = 1280;
 	const int gameHeight = 720;
 	const float gravity = 9.8f;
 
-	const float maxImpactX = 2.f / 1000.f;
-	const float maxImpactY = 3.f / 1000.f;
+	const float maxImpactX = 0.01f;
+	const float maxImpactY = 0.1f;
 
 
 	Lander lander(1500,50, gravity);
@@ -28,7 +26,7 @@ int main()
 	sf::Vector2f gravityVec(0.f, gravity);
 
 	sf::Font font;
-	if (!font.loadFromFile("Arial.ttf"))
+	if (!font.loadFromFile("images/Arial.ttf"))
 		return -1;
 
 	sf::Text startGameMsg;
@@ -83,7 +81,7 @@ int main()
 
 	
 	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "Lander"); // crating a window
-	//window.setVerticalSyncEnabled(true); // fps limmiter
+	window.setVerticalSyncEnabled(true); // fps limmiter
 
 	while (window.isOpen())
 	{
