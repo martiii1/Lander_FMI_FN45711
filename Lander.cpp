@@ -3,12 +3,12 @@
 Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in kg, gravity in m/s*s
 {
 	
-	if (!fLanderTexute.loadFromFile("test1.png"))
+	if (!fLanderTexute.loadFromFile("images/test1.png"))
 	{
 		//error
 	}
 
-	if (!fLangerWithEngineTexure.loadFromFile("LanderWithEngine.png"))
+	if (!fLangerWithEngineTexure.loadFromFile("images/LanderWithEngine.png"))
 	{
 		//error
 	}

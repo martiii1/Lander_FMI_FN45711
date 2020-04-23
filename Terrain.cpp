@@ -2,7 +2,7 @@
 
 Terrain::Terrain(const int gameWidht,int gameHeight)
 {
-	if (!fTerrainTexure.loadFromFile("grass.png"))
+	if (!fTerrainTexure.loadFromFile("images/grass.png"))
 	{
 		//handle error!
 	}
