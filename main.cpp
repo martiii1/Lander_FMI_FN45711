@@ -13,11 +13,11 @@ int main()
 
 	//test consts
 	const float pi = 3.14159f;
-	const int gameWidth = 1024;
-	const int gameHeight = 860;
-	const float gravity = 9.8;
+	const int gameWidth = 1280;
+	const int gameHeight = 720;
+	const float gravity = 9.8f;
 
-	Lander lander(1000,50, gravity);
+	Lander lander(1500,50, gravity);
 	Terrain map(gameWidth,gameHeight);
 
 	sf::Vector2f landerMovementVec(0.f, 0.f);
@@ -71,7 +71,7 @@ int main()
 	bool isRunning = false;
 
 	
-	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "Lander", sf::Style::Titlebar | sf::Style::Close); // crating a window
+	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "Lander"); // crating a window
 	//window.setVerticalSyncEnabled(true); // fps limmiter
 
 	while (window.isOpen())
@@ -96,7 +96,7 @@ int main()
 					clock.restart();
 					// TODO lander reset sruct
 					lander.fLanderSprite.setPosition(gameWidth / 2, gameHeight / 2);
-					map.fTerrainSprite.setPosition(gameWidth / 2, gameHeight - map.fTerrainTexure.getSize().y);
+					map.fTerrainSprite.setPosition(0, gameHeight - map.fTerrainTexure.getSize().y);
 				}
 			}
 
@@ -164,13 +164,11 @@ int main()
 		
 
 			tempX = landerMovementVec.x * 1000;
-			tempX = std::sin(lander.fLanderSprite.getRotation() * pi / 180) * 1000;
 			asd = _itoa(tempX, asdd, 10);
 			xVelTesxt.setString(asd);
 
 
 			tempY = landerMovementVec.y*1000;
-			tempY = std::cos(lander.fLanderSprite.getRotation() * pi / 180) *1000;
 			asd = _itoa(tempY, asdd, 10);
 			yVelTesxt.setString(asd);
 
@@ -178,7 +176,7 @@ int main()
 		}
 
 		// Clear the window 
-		window.clear(sf::Color(50, 100, 50));
+		window.clear(sf::Color(80, 80, 80));
 
 		if (isRunning)
 		{

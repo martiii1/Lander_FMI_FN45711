@@ -1,13 +1,13 @@
 #include "Terrain.hpp"
 
-Terrain::Terrain(const int gameWidht,const int gameHeight)
+Terrain::Terrain(const int gameWidht,int gameHeight)
 {
-	if (!fTerrainTexure.loadFromFile("test2.png"))
+	if (!fTerrainTexure.loadFromFile("grass.png"))
 	{
-		//error
+		//handle error!
 	}
 
-	fTerrainSprite;
 	fTerrainSprite.setTexture(fTerrainTexure);
-	//fTerrainSprite.setPosition(gameWidht/2, gameHeight - fTerrainTexure.getSize().y);
+	//fTerrainSprite.setPosition(0, gameHeight - fTerrainTexure.getSize().y);
+
 }
