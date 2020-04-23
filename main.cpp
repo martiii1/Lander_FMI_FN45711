@@ -17,6 +17,10 @@ int main()
 	const int gameHeight = 720;
 	const float gravity = 9.8f;
 
+	const float maxImpactX = 2.f / 1000.f;
+	const float maxImpactY = 3.f / 1000.f;
+
+
 	Lander lander(1500,50, gravity);
 	Terrain map(gameWidth,gameHeight);
 
@@ -34,6 +38,13 @@ int main()
 	startGameMsg.setFillColor(sf::Color::White);
 
 	startGameMsg.setString(" Lander! \n Press \"enter\" to start the game");
+
+
+	sf::Text endGameMsg;
+	endGameMsg.setFont(font);
+	endGameMsg.setCharacterSize(35);
+	endGameMsg.setPosition(gameWidth / 3.f, gameHeight / 2.f);
+
 
 	sf::Text text1;
 	text1.setFont(font);
@@ -110,8 +121,12 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) )
 			{
 				lander.CalcVecs();
-
 				landerMovementVec += (landerMovementVec + lander.fLanderThrustVector ) * deltaT * deltaT;
+				lander.EngineOn();
+			}
+			else
+			{
+				lander.EngineOff();
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -137,15 +152,38 @@ int main()
 
 			lander.fLanderSprite.setRotation(lander.fLanderRotation);
 			lander.CalcVecs();
-		
 
-			landerMovementVec += (landerMovementVec + gravityVec) * deltaT * deltaT; // not 100% realistic but its better.
+			landerMovementVec += (landerMovementVec + gravityVec) * deltaT * deltaT; // nearly 1-1 with real life if the lander is correctly setup
 			
 			lander.fLanderSprite.move(landerMovementVec);
 
+
+			//collision detection
+
+			if (lander.fLanderSprite.getGlobalBounds().intersects(map.fTerrainSprite.getGlobalBounds()))
+			{
+				if (landerMovementVec.x < maxImpactX && landerMovementVec.y < maxImpactY)
+				{
+					landerMovementVec.x = 0;
+					landerMovementVec.y = 0;
+					endGameMsg.setFillColor(sf::Color::Green);
+					endGameMsg.setString(" You landed succesfully! ");
+					isRunning = false;
+				}
+				else
+				{
+					landerMovementVec.x = 0;
+					landerMovementVec.y = 0;
+					endGameMsg.setFillColor(sf::Color::Red);
+					endGameMsg.setString(" You crash landed! ");
+					isRunning = false;
+				}
+			}
+
+
 			 
 
-			//Text for sesting purposes
+			//Text for testing purposes
 			int tempX = lander.fLanderSprite.getPosition().x;
 			int tempY = lander.fLanderSprite.getPosition().y;
 
@@ -167,8 +205,8 @@ int main()
 			asd = _itoa(tempX, asdd, 10);
 			xVelTesxt.setString(asd);
 
-
-			tempY = landerMovementVec.y*1000;
+			std::cout << landerMovementVec.y << std::endl;
+			tempY = landerMovementVec.y * 1000;
 			asd = _itoa(tempY, asdd, 10);
 			yVelTesxt.setString(asd);
 
@@ -192,6 +230,7 @@ int main()
 		else
 		{
 			window.draw(startGameMsg);
+			window.draw(endGameMsg);
 		}
 
 

@@ -8,6 +8,11 @@ Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in
 		//error
 	}
 
+	if (!fLangerWithEngineTexure.loadFromFile("LanderWithEngine.png"))
+	{
+		//error
+	}
+
 	fThrust = thrust;
 	fMass = mass;
 	fGravityAcceleration = graviy;
@@ -31,4 +36,14 @@ void Lander::CalcVecs()
 
 	fLanderThrustVector.x = std::sin(fLanderRotation * pi / 180) * fAcceleration*2.f;
 	fLanderThrustVector.y = std::cos(fLanderRotation * pi / 180) * fAcceleration * (-2.f); // * 2 seems realistic but why?
+}
+
+void Lander::EngineOn()
+{
+	fLanderSprite.setTexture(fLangerWithEngineTexure);
+}
+
+void Lander::EngineOff()
+{
+	fLanderSprite.setTexture(fLanderTexute);
 }

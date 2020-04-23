@@ -8,9 +8,12 @@ public:
 	const int pi = 3.14159;
 	Lander(float thrust,float mass,float gravity);
 	void CalcVecs();
+	void EngineOn();
+	void EngineOff();
 
 
 	sf::Texture fLanderTexute;
+	sf::Texture fLangerWithEngineTexure;
 	sf::Sprite fLanderSprite;
 	sf::Vector2f fLanderThrustVector;
 
