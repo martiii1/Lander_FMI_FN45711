@@ -209,7 +209,7 @@ void LanderGame::startGame()
 
 			if (lander.fLanderSprite.getGlobalBounds().intersects(fCurrentLevel.getSprite().getGlobalBounds()))
 			{
-				if (landerMovementVec.x < maxImpactX && landerMovementVec.y < maxImpactY && lander.fLanderRotation < maxRotation)
+				if (landerMovementVec.x < maxImpactX && landerMovementVec.x > -maxImpactX && landerMovementVec.y < maxImpactY && lander.fLanderRotation < maxRotation)
 				{
 					landerMovementVec.x = 0;
 					landerMovementVec.y = 0;
