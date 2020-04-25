@@ -5,11 +5,12 @@ class TextAndMessages
 {
 public:
 	TextAndMessages();
-	TextAndMessages(char* text, int size, unsigned int positionX, unsigned int positionY, sf::Color color);
+	TextAndMessages(const char* text, int size, unsigned int positionX, unsigned int positionY, sf::Color color);
 
-	void chageTxt(char* text);
+	void chageTxt(const char* text);
 	void chagePosition(unsigned int positionX, unsigned int positionY);
 	void chageSize(int size);
+	void changeColor(sf::Color newColor);
 	
 
 
@@ -22,7 +23,7 @@ private:
 	unsigned int fPositionX;
 	unsigned int fPositionY;
 	sf::Color fTextColor;
-	char* fText;
+	const char* fText;
 
 };
 

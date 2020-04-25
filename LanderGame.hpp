@@ -10,12 +10,17 @@ class LanderGame
 {
 public:
 	LanderGame();
+	LanderGame(unsigned int gameWidth, unsigned int gameHeight);
 
 	void startGame();
 
+
+	unsigned int getWidth();
+	unsigned int getHeight();
+
 private:
-	unsigned int gameWidth;
-	unsigned int gameHeight;
+	unsigned int fGameWidth;
+	unsigned int fGameHeight;
 
 	Lander fLander;
 	Level fCurrentLevel;

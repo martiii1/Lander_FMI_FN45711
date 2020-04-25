@@ -5,8 +5,10 @@
 class Lander
 {
 public:
-	const int pi = 3.14159;
+	Lander();
 	Lander(float thrust,float mass,float gravity);
+
+	const int pi = 3.14159;
 	void CalcVecs();
 	void EngineOn();
 	void EngineOff();

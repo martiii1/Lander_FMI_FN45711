@@ -1,5 +1,34 @@
 #include "Lander.hpp"
 
+Lander::Lander()
+{
+	if (!fLanderTexute.loadFromFile("images/test1.png"))
+	{
+		//error
+	}
+
+	if (!fLangerWithEngineTexure.loadFromFile("images/LanderWithEngine.png"))
+	{
+		//error
+	}
+
+	fThrust = 1500;
+	fMass = 50;
+	fGravityAcceleration = 9.8f;
+
+	fWeight = fMass * 9.8f;
+	fResultantForce = fThrust - fWeight;
+	fAcceleration = fResultantForce / fMass;
+
+
+	fLanderSprite.setTexture(fLanderTexute);
+	//fLanderSprite.setPosition(0, 0);
+	fLanderSprite.setOrigin(sf::Vector2f(fLanderSprite.getTexture()->getSize().x / 2, fLanderSprite.getTexture()->getSize().y / 2));
+
+	fLanderRotation = 0;
+
+}
+
 Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in kg, gravity in m/s*s
 {
 	

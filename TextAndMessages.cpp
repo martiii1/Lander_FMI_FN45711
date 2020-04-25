@@ -19,7 +19,7 @@ TextAndMessages::TextAndMessages()
 	fTextMsg.setString(fText);
 }
 
-TextAndMessages::TextAndMessages(char* text, int size, unsigned int positionX, unsigned int positionY, sf::Color color)
+TextAndMessages::TextAndMessages(const char* text, int size, unsigned int positionX, unsigned int positionY, sf::Color color)
 {
 	if (!fFont.loadFromFile("images/Arial.ttf"))
 		return;
@@ -38,9 +38,10 @@ TextAndMessages::TextAndMessages(char* text, int size, unsigned int positionX, u
 
 }
 
-void TextAndMessages::chageTxt(char* text)
+
+void TextAndMessages::chageTxt(const char* text)
 {
-	fText = text;
+	fTextMsg.setString(text);
 }
 
 void TextAndMessages::chagePosition(unsigned int positionX, unsigned int positionY)
@@ -51,7 +52,12 @@ void TextAndMessages::chagePosition(unsigned int positionX, unsigned int positio
 
 void TextAndMessages::chageSize(int size)
 {
-	fSizeOfText = size;
+	fTextMsg.setCharacterSize(size);
+}
+
+void TextAndMessages::changeColor(sf::Color newColor)
+{
+	fTextMsg.setFillColor(newColor);
 }
 
 sf::Text TextAndMessages::getText()

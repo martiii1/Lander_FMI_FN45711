@@ -1,6 +1,6 @@
 #include "Terrain.hpp"
 
-Terrain::Terrain(const int gameWidht,int gameHeight)
+Terrain::Terrain()
 {
 	if (!fTerrainTexure.loadFromFile("images/grass.png"))
 	{

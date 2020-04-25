@@ -4,7 +4,7 @@
 class Terrain
 {
 public:
-	Terrain(const int gameWidht,const int gameHeight);
+	Terrain();
 
 	sf::Texture fTerrainTexure;
 	sf::Sprite fTerrainSprite;

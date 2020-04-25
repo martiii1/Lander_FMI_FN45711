@@ -3,12 +3,16 @@
 
 
 
-class Level
+class Level : private Terrain
 {
+public:
+	Level();
+	sf::Sprite getSprite();
+	sf::Texture getTexure();
 
-	Terrain fLevelTerrain;
+	void setSpritePosition(int X, int Y);
+
+private:
 	float fLevelGravity;
-
-
 };
 

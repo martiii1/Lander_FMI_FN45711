@@ -9,11 +9,27 @@
 #include "Terrain.hpp"
 
 
+LanderGame::LanderGame()
+{
+	fLander;
+	fCurrentLevel;
+	fGameWidth = 1280;
+	fGameHeight = 720;
+	fLander;
+	fCurrentLevel;
+}
+
+LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight)
+{
+	fGameWidth = gameWidth;
+	fGameHeight = gameHeight;
+
+}
+
+
 void LanderGame::startGame()
 {
 	//test consts
-	const int gameWidth = 1280;
-	const int gameHeight = 720;
 	const float gravity = 9.8f;
 
 	const float maxImpactX = 0.01f;
@@ -22,29 +38,19 @@ void LanderGame::startGame()
 
 
 	Lander lander(1500, 50, gravity);
-	Terrain map(gameWidth, gameHeight);
+	
 
 	sf::Vector2f landerMovementVec(0.f, 0.f);
 	sf::Vector2f gravityVec(0.f, gravity);
 
 	sf::Font font;
 	if (!font.loadFromFile("images/Arial.ttf"))
-		return -1;
+		return;
 
-	sf::Text startGameMsg;
-	startGameMsg.setFont(font);
-	startGameMsg.setCharacterSize(35);
-	startGameMsg.setPosition(gameWidth / 4.f, gameHeight / 50.f);
-	startGameMsg.setFillColor(sf::Color::White);
-	startGameMsg.setString(" Lander! \n Press \"enter\" to start the game");
+	TextAndMessages startGameMsg(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
 
+	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 2, sf::Color::White);
 
-
-
-	sf::Text endGameMsg;
-	endGameMsg.setFont(font);
-	endGameMsg.setCharacterSize(35);
-	endGameMsg.setPosition(gameWidth / 3.f, gameHeight / 2.f);
 
 
 	sf::Text text1;
@@ -83,7 +89,7 @@ void LanderGame::startGame()
 	bool isRunning = false;
 
 
-	sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight), "Lander"); // crating a window
+	sf::RenderWindow window(sf::VideoMode(fGameWidth, fGameHeight), "Lander"); // crating a window
 	window.setVerticalSyncEnabled(true); // fps limmiter
 
 	while (window.isOpen())
@@ -107,8 +113,8 @@ void LanderGame::startGame()
 					isRunning = true;
 					clock.restart();
 					// TODO lander reset sruct
-					lander.fLanderSprite.setPosition(gameWidth / 2, gameHeight / 2);
-					map.fTerrainSprite.setPosition(0, gameHeight - map.fTerrainTexure.getSize().y);
+					lander.fLanderSprite.setPosition(fGameWidth / 2, fGameHeight / 2);
+					fCurrentLevel.setSpritePosition(0, fGameHeight - fCurrentLevel.getTexure().getSize().y);
 				}
 			}
 
@@ -140,7 +146,7 @@ void LanderGame::startGame()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
 				lander.fLanderRotation -= 60.f * deltaT;
-				if (lander.fLanderRotation > 360.f)
+				if (lander.fLanderRotation < -360.f)
 					lander.fLanderRotation = 0;
 			}
 
@@ -161,22 +167,23 @@ void LanderGame::startGame()
 
 			//collision detection
 
-			if (lander.fLanderSprite.getGlobalBounds().intersects(map.fTerrainSprite.getGlobalBounds()))
+			if (lander.fLanderSprite.getGlobalBounds().intersects(fCurrentLevel.getSprite().getGlobalBounds()))
 			{
 				if (landerMovementVec.x < maxImpactX && landerMovementVec.y < maxImpactY && lander.fLanderRotation < maxRotation)
 				{
 					landerMovementVec.x = 0;
 					landerMovementVec.y = 0;
-					endGameMsg.setFillColor(sf::Color::Green);
-					endGameMsg.setString(" You landed succesfully! ");
+					endGameMsg.changeColor(sf::Color::Green);
+					endGameMsg.chageTxt(" You landed succesfully! ");
 					isRunning = false;
 				}
 				else
 				{
 					landerMovementVec.x = 0;
 					landerMovementVec.y = 0;
-					endGameMsg.setFillColor(sf::Color::Red);
-					endGameMsg.setString(" You crash landed! ");
+					lander.fLanderRotation = 0;
+					endGameMsg.changeColor(sf::Color::Red);
+					endGameMsg.chageTxt(" You crashed! ");
 					isRunning = false;
 				}
 			}
@@ -220,7 +227,7 @@ void LanderGame::startGame()
 		if (isRunning)
 		{
 			window.draw(lander.fLanderSprite);
-			window.draw(map.fTerrainSprite);
+			window.draw(fCurrentLevel.getSprite());
 
 			window.draw(text1);
 			window.draw(text2);
@@ -230,8 +237,8 @@ void LanderGame::startGame()
 		}
 		else
 		{
-			window.draw(startGameMsg);
-			window.draw(endGameMsg);
+			window.draw(startGameMsg.getText());
+			window.draw(endGameMsg.getText());
 		}
 
 
@@ -239,4 +246,14 @@ void LanderGame::startGame()
 	}
 
 
+}
+
+unsigned int LanderGame::getWidth()
+{
+	return fGameWidth;
+}
+
+unsigned int LanderGame::getHeight()
+{
+	return fGameHeight;
 }
