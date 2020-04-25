@@ -1,19 +1,28 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 class Button
 {
 
 public:
-	Button(const char* notPressedImage,const char* pressedImage, unsigned int positionX, unsigned int positionY);
+	Button(const char* notPressedImage,const char* pressedImage, float positionX, float positionY);
+	
+	void setPos();
 
-	bool isClicked();
+	sf::Sprite getSprite();
+	bool isClicked(float mouseX, float mouseY, bool click);
 
 private:
-	sf::Texture notPressedTexure;
-	sf::Texture pressedTexure;
-	sf::Sprite notPressedButtonSprite;
-	sf::Sprite pressedButtonSprite;
+	sf::Texture fNotPressedTexure;
+	sf::Texture fPressedTexure;
+	sf::Sprite fSpriteForReturn;
+	sf::Sprite fNotPressedButtonSprite;
+	sf::Sprite fPressedButtonSprite;
+
+	float fPositionX, fPositionY;
+	float fSpriteSizeX, fSpriteSizeY;
+
 	bool isPressed;
 
 };

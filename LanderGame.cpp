@@ -7,6 +7,7 @@
 
 #include "Lander.hpp"
 #include "Terrain.hpp"
+#include "Button.hpp"
 
 
 LanderGame::LanderGame()
@@ -30,7 +31,7 @@ LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight)
 void LanderGame::startGame()
 {
 	//test consts
-	const float gravity = 9.8f;
+	float gravity = 9.8f;
 
 	const float maxImpactX = 0.01f;
 	const float maxImpactY = 0.1f;
@@ -47,12 +48,10 @@ void LanderGame::startGame()
 	if (!font.loadFromFile("images/Arial.ttf"))
 		return;
 
-	
 
 
 	TextAndMessages startGameMsg(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
-
-	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 2, sf::Color::White);
+	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 6, sf::Color::White);
 
 
 
@@ -91,6 +90,20 @@ void LanderGame::startGame()
 	sf::Clock clock;
 	bool isRunning = false;
 
+	float tempMouseX;
+	float tempMouseY;
+	bool tempMouseButton;
+
+
+
+	Button Earth("images/earth.png", "images/earthP.png", fGameWidth / 8.f * 2, fGameHeight / 2.f);
+	Button Moon("images/moon.png", "images/moonP.png", fGameWidth / 8.f * 3, fGameHeight / 2.f);
+	Button Mars("images/mars.png", "images/marsP.png", fGameWidth / 8.f * 4, fGameHeight / 2.f);
+
+	Earth.setPos();
+	Moon.setPos();
+	Mars.setPos();
+
 
 	sf::RenderWindow window(sf::VideoMode(fGameWidth, fGameHeight), "Lander"); // crating a window
 	window.setVerticalSyncEnabled(true); // fps limmiter
@@ -118,7 +131,28 @@ void LanderGame::startGame()
 					// TODO lander reset sruct
 					lander.fLanderSprite.setPosition(fGameWidth / 2, fGameHeight / 2);
 					fCurrentLevel.setSpritePosition(0, fGameHeight - fCurrentLevel.getTexure().getSize().y);
+					lander.changeGravity(gravity);
+					gravityVec.y = gravity;
+
 				}
+			}
+			else
+			{
+				tempMouseX = sf::Mouse::getPosition(window).x;
+				tempMouseY = sf::Mouse::getPosition(window).y;
+				tempMouseButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+
+				if (Earth.isClicked(tempMouseX,tempMouseY,tempMouseButton))
+					gravity = 9.8f;
+
+				if (Moon.isClicked(tempMouseX, tempMouseY, tempMouseButton))
+					gravity = 0.5f;
+
+				if(Mars.isClicked(tempMouseX, tempMouseY, tempMouseButton))
+					gravity = 4.5f;
+
+
+
 			}
 
 		}
@@ -237,11 +271,19 @@ void LanderGame::startGame()
 			window.draw(xVelTesxt);
 			window.draw(yVelTesxt);
 			window.draw(rotatiton);
+
 		}
 		else
 		{
+
 			window.draw(startGameMsg.getText());
 			window.draw(endGameMsg.getText());
+
+
+			window.draw(Earth.getSprite());
+			window.draw(Moon.getSprite());
+			window.draw(Mars.getSprite());
+
 		}
 
 

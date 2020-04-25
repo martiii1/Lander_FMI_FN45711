@@ -84,3 +84,8 @@ void Lander::EngineOff()
 	fLanderSprite.setTexture(fLanderTexute);
 	engineOn = false;
 }
+
+void Lander::changeGravity(float newGravity)
+{
+	fGravityAcceleration = newGravity;
+}

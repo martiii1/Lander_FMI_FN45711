@@ -12,7 +12,7 @@ public:
 	void CalcVecs();
 	void EngineOn();
 	void EngineOff();
-
+	void changeGravity(float newGravity);
 
 	sf::Texture fLanderTexute;
 	sf::Texture fLangerWithEngineTexure;
