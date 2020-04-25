@@ -19,7 +19,7 @@ public:
 
 	float fThrust;				// IN newtons, N
 	float fMass;				// in kilograms, kg
-	float fGravityAcceleration;
+	float fGravityAcceleration; // gravity (m/s*s)
 	float fWeight;				// mass * gravity (in N)
 	float fResultantForce;		// thrust - weight (in N)
 	float fAcceleration;		// int meters per second per second (m/s*s)

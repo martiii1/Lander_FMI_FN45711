@@ -8,4 +8,5 @@ public:
 
 	sf::Texture fTerrainTexure;
 	sf::Sprite fTerrainSprite;
+
 };

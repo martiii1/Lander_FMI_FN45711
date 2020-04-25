@@ -132,12 +132,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lander.cpp" />
+    <ClCompile Include="LanderGame.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TextAndMessages.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lander.hpp" />
+    <ClInclude Include="LanderGame.hpp" />
+    <ClInclude Include="Level.hpp" />
     <ClInclude Include="Terrain.hpp" />
+    <ClInclude Include="TextAndMessages.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
