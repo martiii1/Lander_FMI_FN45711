@@ -47,6 +47,9 @@ void LanderGame::startGame()
 	if (!font.loadFromFile("images/Arial.ttf"))
 		return;
 
+	
+
+
 	TextAndMessages startGameMsg(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
 
 	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 2, sf::Color::White);

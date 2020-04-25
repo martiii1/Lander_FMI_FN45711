@@ -28,5 +28,7 @@ public:
 
 	float fLanderRotation;		// rotation in degrees
 
+	bool engineOn;
+
 };
 

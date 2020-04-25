@@ -11,6 +11,7 @@ Lander::Lander()
 	{
 		//error
 	}
+	
 
 	fThrust = 1500;
 	fMass = 50;
@@ -20,12 +21,12 @@ Lander::Lander()
 	fResultantForce = fThrust - fWeight;
 	fAcceleration = fResultantForce / fMass;
 
-
+	fLanderTexute.setSmooth(true);
 	fLanderSprite.setTexture(fLanderTexute);
-	//fLanderSprite.setPosition(0, 0);
 	fLanderSprite.setOrigin(sf::Vector2f(fLanderSprite.getTexture()->getSize().x / 2, fLanderSprite.getTexture()->getSize().y / 2));
 
 	fLanderRotation = 0;
+	engineOn = false;
 
 }
 
@@ -42,6 +43,7 @@ Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in
 		//error
 	}
 
+
 	fThrust = thrust;
 	fMass = mass;
 	fGravityAcceleration = graviy;
@@ -50,12 +52,16 @@ Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in
 	fResultantForce = thrust - fWeight;
 	fAcceleration = fResultantForce / mass;
 
+	fLanderTexute.setSmooth(true);
+	fLangerWithEngineTexure.setSmooth(true);
 
 	fLanderSprite.setTexture(fLanderTexute);
 	//fLanderSprite.setPosition(0, 0);
 	fLanderSprite.setOrigin(sf::Vector2f(fLanderSprite.getTexture()->getSize().x / 2, fLanderSprite.getTexture()->getSize().y / 2));
 
 	fLanderRotation = 0;
+	engineOn = false;
+
 }
 
 void Lander::CalcVecs()
@@ -70,9 +76,11 @@ void Lander::CalcVecs()
 void Lander::EngineOn()
 {
 	fLanderSprite.setTexture(fLangerWithEngineTexure);
+	engineOn = true;
 }
 
 void Lander::EngineOff()
 {
 	fLanderSprite.setTexture(fLanderTexute);
+	engineOn = false;
 }
