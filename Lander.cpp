@@ -89,3 +89,9 @@ void Lander::changeGravity(float newGravity)
 {
 	fGravityAcceleration = newGravity;
 }
+
+void Lander::changeRotation(int newRotation)
+{
+	fLanderRotation = newRotation;
+
+}

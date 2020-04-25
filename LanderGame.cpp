@@ -33,7 +33,7 @@ void LanderGame::startGame()
 	//test consts
 	float gravity = 9.8f;
 
-	const float maxImpactX = 0.01f;
+	const float maxImpactX = 0.015f;
 	const float maxImpactY = 0.1f;
 	const float maxRotation = 2.5f;
 
@@ -129,7 +129,10 @@ void LanderGame::startGame()
 					isRunning = true;
 					clock.restart();
 					// TODO lander reset sruct
-					lander.fLanderSprite.setPosition(fGameWidth / 2, fGameHeight / 2);
+					lander.fLanderSprite.setPosition(0, 50); // TODO fix
+					landerMovementVec.x = 1.5f; // test
+					lander.changeRotation(-90); // test
+
 					fCurrentLevel.setSpritePosition(0, fGameHeight - fCurrentLevel.getTexure().getSize().y);
 					lander.changeGravity(gravity);
 					gravityVec.y = gravity;
@@ -250,7 +253,6 @@ void LanderGame::startGame()
 			asd = _itoa(tempX, asdd, 10);
 			xVelTesxt.setString(asd);
 
-			std::cout << landerMovementVec.y << std::endl;
 			tempY = landerMovementVec.y * 1000;
 			asd = _itoa(tempY, asdd, 10);
 			yVelTesxt.setString(asd);
