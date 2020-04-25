@@ -23,7 +23,6 @@ private:
 	float fPositionX, fPositionY;
 	float fSpriteSizeX, fSpriteSizeY;
 
-	bool isPressed;
 
 };
 

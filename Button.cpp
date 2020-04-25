@@ -23,7 +23,6 @@ Button::Button(const char* notPressedImage, const char* pressedImage, float posi
 	fPositionX = positionX;
 	fPositionY = positionY;
 
-	isPressed = false;
 }
 
 void Button::setPos()
@@ -45,19 +44,14 @@ bool Button::isClicked(float mouseX,float mouseY, bool click)
 		mouseY < fPositionY + fSpriteSizeY &&
 		click)
 	{
-		isPressed = true;
 		fSpriteForReturn = fPressedButtonSprite;
+		return true;
 	}
 	else
 	{
 		fSpriteForReturn = fNotPressedButtonSprite;
+		return false;
 	}
 
-	if (!click && isPressed == true)
-	{
-		return  true;
-		isPressed = false;
-	}
-
-	return false;
+	
 }

@@ -143,13 +143,13 @@ void LanderGame::startGame()
 				tempMouseButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 
 				if (Earth.isClicked(tempMouseX,tempMouseY,tempMouseButton))
-					gravity = 9.8f;
+					gravity = 9.8f;  // Level load here
 
 				if (Moon.isClicked(tempMouseX, tempMouseY, tempMouseButton))
 					gravity = 0.5f;
 
 				if(Mars.isClicked(tempMouseX, tempMouseY, tempMouseButton))
-					gravity = 4.5f;
+					gravity = 4.5f; // Level load here
 
 
 
