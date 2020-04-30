@@ -48,8 +48,6 @@ void LanderGame::startGame()
 	if (!font.loadFromFile("images/Arial.ttf"))
 		return;
 
-
-
 	TextAndMessages startGameMsg(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
 	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 6, sf::Color::White);
 
@@ -209,6 +207,7 @@ void LanderGame::startGame()
 
 			if (lander.fLanderSprite.getGlobalBounds().intersects(fCurrentLevel.getSprite().getGlobalBounds()))
 			{
+
 				if (landerMovementVec.x < maxImpactX && landerMovementVec.x > -maxImpactX && landerMovementVec.y < maxImpactY && lander.fLanderRotation < maxRotation)
 				{
 					landerMovementVec.x = 0;
@@ -274,6 +273,11 @@ void LanderGame::startGame()
 			window.draw(yVelTesxt);
 			window.draw(rotatiton);
 
+
+			//test\/\/\/\/\/\/
+
+			window.draw(fCurrentLevel.asd, &fCurrentLevel.fTerrainTexure);
+
 		}
 		else
 		{
@@ -291,7 +295,7 @@ void LanderGame::startGame()
 
 		window.display();
 	}
-
+	
 
 }
 
@@ -303,4 +307,27 @@ unsigned int LanderGame::getWidth()
 unsigned int LanderGame::getHeight()
 {
 	return fGameHeight;
+}
+
+bool LanderGame::detectColision(Lander& lander, sf::VertexArray &map)
+{
+	float landerUpLeft = lander.fLanderSprite.getPosition().x;
+	float landerUpRight = lander.fLanderSprite.getPosition().y;
+	float landerDownLeft = lander.fLanderSprite.getPosition().x;
+	float landerDownRight = lander.fLanderSprite.getPosition().y;
+
+
+
+
+
+	return true;
+}
+
+float LanderGame::triangleArea(sf::Vector2f &point1, sf::Vector2f &point2, sf::Vector2f &point3)
+{
+	float det = 0.f;
+
+	det = abs(point1.y * (point3.x - point2.x) + point2.y * (point1.x - point3.x) + point3.y * (point2.x - point1.x));
+	
+	return (det / 2.f);
 }

@@ -3,7 +3,7 @@
 
 
 
-class Level : private Terrain
+class Level : public Terrain
 {
 public:
 	Level();

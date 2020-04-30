@@ -25,5 +25,8 @@ private:
 	Lander fLander;
 	Level fCurrentLevel;
 
+	bool detectColision(Lander& lander, sf::VertexArray& map);
+	float triangleArea(sf::Vector2f &point1, sf::Vector2f &point2, sf::Vector2f &point3);
+
 };
 

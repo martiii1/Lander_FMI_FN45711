@@ -13,7 +13,7 @@ public:
 	void changeColor(sf::Color newColor);
 	
 
-
+	
 	sf::Text getText();
 
 private:

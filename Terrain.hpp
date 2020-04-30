@@ -9,4 +9,5 @@ public:
 	sf::Texture fTerrainTexure;
 	sf::Sprite fTerrainSprite;
 
+	sf::VertexArray asd;
 };

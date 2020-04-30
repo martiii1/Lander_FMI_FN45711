@@ -3,14 +3,15 @@
 
 TextAndMessages::TextAndMessages()
 {
-	if (!fFont.loadFromFile("images/Arial.ttf"))
-		return;
 
 	fSizeOfText = 15;
 	fPositionX = 0;
 	fPositionY = 20;
 	fTextColor = sf::Color::White;
 	fText = nullptr;
+
+	if (!fFont.loadFromFile("images/Arial.ttf"))
+		return;
 
 	fTextMsg.setFont(fFont);
 	fTextMsg.setCharacterSize(fSizeOfText);
@@ -21,14 +22,14 @@ TextAndMessages::TextAndMessages()
 
 TextAndMessages::TextAndMessages(const char* text, int size, unsigned int positionX, unsigned int positionY, sf::Color color)
 {
-	if (!fFont.loadFromFile("images/Arial.ttf"))
-		return;
-
 	fSizeOfText = size;
 	fPositionX = positionX;
 	fPositionY = positionY;
 	fTextColor = color;
 	fText = text;
+
+	if (!fFont.loadFromFile("images/Arial.ttf"))
+		return;
 
 	fTextMsg.setFont(fFont);
 	fTextMsg.setCharacterSize(fSizeOfText);
