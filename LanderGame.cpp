@@ -15,7 +15,7 @@ LanderGame::LanderGame()
 	fLander;
 	fCurrentLevel;
 	fGameWidth = 1280;
-	fGameHeight = 720;
+	fGameHeight = 920;
 	fLander;
 	fCurrentLevel;
 }
@@ -205,6 +205,16 @@ void LanderGame::startGame()
 
 			//collision detection
 
+			if(detectColision(lander,fCurrentLevel))
+			{
+				landerMovementVec.x = 0;
+				landerMovementVec.y = 0;
+				endGameMsg.changeColor(sf::Color::Green);
+				endGameMsg.chageTxt(" You landed succesfully! test ");
+				isRunning = false;
+			}
+
+
 			if (lander.fLanderSprite.getGlobalBounds().intersects(fCurrentLevel.getSprite().getGlobalBounds()))
 			{
 
@@ -309,19 +319,41 @@ unsigned int LanderGame::getHeight()
 	return fGameHeight;
 }
 
-bool LanderGame::detectColision(Lander& lander, sf::VertexArray &map)
+bool LanderGame::detectColision(Lander& lander, Level& map)
 {
-	float landerUpLeft = lander.fLanderSprite.getPosition().x;
-	float landerUpRight = lander.fLanderSprite.getPosition().y;
-	float landerDownLeft = lander.fLanderSprite.getPosition().x;
-	float landerDownRight = lander.fLanderSprite.getPosition().y;
+	sf::Vector2f landerUpLeft;
+	sf::Vector2f landerUpRight;
+	sf::Vector2f landerDownLeft;
+	sf::Vector2f landerDownRight;
 
 
+	landerUpLeft = lander.fLanderSprite.getPosition();
+	landerUpRight = lander.fLanderSprite.getPosition() + sf::Vector2f(lander.fLanderTexute.getSize().x, 0.f);
+	landerDownLeft = lander.fLanderSprite.getPosition() + sf::Vector2f(0.f, lander.fLanderTexute.getSize().y);
+	landerDownRight = lander.fLanderSprite.getPosition() + sf::Vector2f(lander.fLanderTexute.getSize().x, lander.fLanderTexute.getSize().y);
+
+	size_t numberOfVertex = map.asd.getVertexCount();
 
 
+	for (int i = 0; i < numberOfVertex - 3; i++)
+	{
+		if (pointInTriangle(landerUpLeft, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+			return true;
 
-	return true;
+		if (pointInTriangle(landerDownLeft, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+			return true;
+
+		if (pointInTriangle(landerUpRight, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+			return true;
+
+		if (pointInTriangle(landerDownRight, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+			return true;
+	}
+
+	return false;
 }
+
+
 
 float LanderGame::triangleArea(sf::Vector2f &point1, sf::Vector2f &point2, sf::Vector2f &point3)
 {
@@ -331,3 +363,20 @@ float LanderGame::triangleArea(sf::Vector2f &point1, sf::Vector2f &point2, sf::V
 	
 	return (det / 2.f);
 }
+
+bool LanderGame::pointInTriangle(sf::Vector2f& point, sf::Vector2f& triangleA, sf::Vector2f& triangleB, sf::Vector2f& triangleC)
+{
+	float mainTriangle;
+	mainTriangle = triangleArea(triangleA, triangleB, triangleC);
+
+	float tempSumOfTriangles = 0.f;
+	tempSumOfTriangles += triangleArea(triangleA, point, triangleB);
+	tempSumOfTriangles += triangleArea(triangleB, point, triangleC);
+	tempSumOfTriangles += triangleArea(triangleA, point, triangleC);
+
+	if (tempSumOfTriangles > mainTriangle)
+		return false;
+	else
+		return true;
+}
+
