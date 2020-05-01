@@ -205,7 +205,13 @@ void LanderGame::startGame()
 
 			//collision detection
 
-			if(detectColision(lander,fCurrentLevel))
+
+
+			float tempfX = lander.fLanderSprite.getPosition().x;
+			float tempfY = lander.fLanderSprite.getPosition().y;
+
+
+			if(detectColision(sf::Vector2f(tempfX,tempfY), fCurrentLevel,(sf::Vector2f)lander.fLanderTexute.getSize()))
 			{
 				landerMovementVec.x = 0;
 				landerMovementVec.y = 0;
@@ -239,10 +245,12 @@ void LanderGame::startGame()
 
 
 
-
 			//Text for testing purposes
 			int tempX = lander.fLanderSprite.getPosition().x;
 			int tempY = lander.fLanderSprite.getPosition().y;
+			////Text for testing purposes
+			//int tempX = lander.fLanderSprite.getPosition().x;
+			//int tempY = lander.fLanderSprite.getPosition().y;
 
 			char asdd[20];
 			sf::String asd;
@@ -319,7 +327,7 @@ unsigned int LanderGame::getHeight()
 	return fGameHeight;
 }
 
-bool LanderGame::detectColision(Lander& lander, Level& map)
+bool LanderGame::detectColision(const sf::Vector2f& landerUpLeftPos, const Level& map, const sf::Vector2f& texureSize)
 {
 	sf::Vector2f landerUpLeft;
 	sf::Vector2f landerUpRight;
@@ -327,10 +335,10 @@ bool LanderGame::detectColision(Lander& lander, Level& map)
 	sf::Vector2f landerDownRight;
 
 
-	landerUpLeft = lander.fLanderSprite.getPosition();
-	landerUpRight = lander.fLanderSprite.getPosition() + sf::Vector2f(lander.fLanderTexute.getSize().x, 0.f);
-	landerDownLeft = lander.fLanderSprite.getPosition() + sf::Vector2f(0.f, lander.fLanderTexute.getSize().y);
-	landerDownRight = lander.fLanderSprite.getPosition() + sf::Vector2f(lander.fLanderTexute.getSize().x, lander.fLanderTexute.getSize().y);
+	landerUpLeft = landerUpLeftPos + sf::Vector2f(-texureSize.x/2.f, -texureSize.y/2);
+	landerUpRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, -texureSize.y / 2);
+	landerDownLeft = landerUpLeftPos  + sf::Vector2f(-texureSize.x / 2.f, texureSize.y / 2);
+	landerDownRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, texureSize.y / 2);
 
 	size_t numberOfVertex = map.asd.getVertexCount();
 
@@ -355,7 +363,7 @@ bool LanderGame::detectColision(Lander& lander, Level& map)
 
 
 
-float LanderGame::triangleArea(sf::Vector2f &point1, sf::Vector2f &point2, sf::Vector2f &point3)
+float LanderGame::triangleArea(const sf::Vector2f& point1, const sf::Vector2f& point2, const sf::Vector2f& point3)
 {
 	float det = 0.f;
 
@@ -364,7 +372,7 @@ float LanderGame::triangleArea(sf::Vector2f &point1, sf::Vector2f &point2, sf::V
 	return (det / 2.f);
 }
 
-bool LanderGame::pointInTriangle(sf::Vector2f& point, sf::Vector2f& triangleA, sf::Vector2f& triangleB, sf::Vector2f& triangleC)
+bool LanderGame::pointInTriangle(const sf::Vector2f& point, const sf::Vector2f& triangleA, const sf::Vector2f& triangleB, const sf::Vector2f& triangleC)
 {
 	float mainTriangle;
 	mainTriangle = triangleArea(triangleA, triangleB, triangleC);
