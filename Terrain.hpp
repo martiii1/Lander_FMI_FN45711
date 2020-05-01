@@ -4,10 +4,13 @@
 class Terrain
 {
 public:
-	Terrain();
+	Terrain(unsigned short int gameWidth = 1024, unsigned short int gameHeight = 768);
 
 	sf::Texture fTerrainTexure;
 	sf::Sprite fTerrainSprite;
 
-	sf::VertexArray asd;
+	sf::VertexArray fTerrainTriangles;
+
+	unsigned short int fGameWidth;
+	unsigned short int fGameHeight;
 };

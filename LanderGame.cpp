@@ -15,7 +15,7 @@ LanderGame::LanderGame()
 	fLander;
 	fCurrentLevel;
 	fGameWidth = 1280;
-	fGameHeight = 920;
+	fGameHeight = 720;
 	fLander;
 	fCurrentLevel;
 }
@@ -91,7 +91,6 @@ void LanderGame::startGame()
 	float tempMouseX;
 	float tempMouseY;
 	bool tempMouseButton;
-
 
 
 	Button Earth("images/earth.png", "images/earthP.png", fGameWidth / 8.f * 2, fGameHeight / 2.f);
@@ -210,18 +209,8 @@ void LanderGame::startGame()
 			float tempfX = lander.fLanderSprite.getPosition().x;
 			float tempfY = lander.fLanderSprite.getPosition().y;
 
-
+			//TODO:  TURN ON WHEN THE PLAYER IS LOW 
 			if(detectColision(sf::Vector2f(tempfX,tempfY), fCurrentLevel,(sf::Vector2f)lander.fLanderTexute.getSize()))
-			{
-				landerMovementVec.x = 0;
-				landerMovementVec.y = 0;
-				endGameMsg.changeColor(sf::Color::Green);
-				endGameMsg.chageTxt(" You landed succesfully! test ");
-				isRunning = false;
-			}
-
-
-			if (lander.fLanderSprite.getGlobalBounds().intersects(fCurrentLevel.getSprite().getGlobalBounds()))
 			{
 
 				if (landerMovementVec.x < maxImpactX && landerMovementVec.x > -maxImpactX && landerMovementVec.y < maxImpactY && lander.fLanderRotation < maxRotation)
@@ -248,9 +237,7 @@ void LanderGame::startGame()
 			//Text for testing purposes
 			int tempX = lander.fLanderSprite.getPosition().x;
 			int tempY = lander.fLanderSprite.getPosition().y;
-			////Text for testing purposes
-			//int tempX = lander.fLanderSprite.getPosition().x;
-			//int tempY = lander.fLanderSprite.getPosition().y;
+
 
 			char asdd[20];
 			sf::String asd;
@@ -283,7 +270,6 @@ void LanderGame::startGame()
 		if (isRunning)
 		{
 			window.draw(lander.fLanderSprite);
-			window.draw(fCurrentLevel.getSprite());
 
 			window.draw(text1);
 			window.draw(text2);
@@ -292,9 +278,7 @@ void LanderGame::startGame()
 			window.draw(rotatiton);
 
 
-			//test\/\/\/\/\/\/
-
-			window.draw(fCurrentLevel.asd, &fCurrentLevel.fTerrainTexure);
+			window.draw(fCurrentLevel.fTerrainTriangles);
 
 		}
 		else
@@ -340,21 +324,21 @@ bool LanderGame::detectColision(const sf::Vector2f& landerUpLeftPos, const Level
 	landerDownLeft = landerUpLeftPos  + sf::Vector2f(-texureSize.x / 2.f, texureSize.y / 2);
 	landerDownRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, texureSize.y / 2);
 
-	size_t numberOfVertex = map.asd.getVertexCount();
+	size_t numberOfVertex = map.fTerrainTriangles.getVertexCount();
 
 
 	for (int i = 0; i < numberOfVertex - 3; i++)
 	{
-		if (pointInTriangle(landerUpLeft, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+		if (pointInTriangle(landerUpLeft, map.fTerrainTriangles[i].position, map.fTerrainTriangles[i + 1].position, map.fTerrainTriangles[i + 2].position))
 			return true;
 
-		if (pointInTriangle(landerDownLeft, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+		if (pointInTriangle(landerDownLeft, map.fTerrainTriangles[i].position, map.fTerrainTriangles[i + 1].position, map.fTerrainTriangles[i + 2].position))
 			return true;
 
-		if (pointInTriangle(landerUpRight, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+		if (pointInTriangle(landerUpRight, map.fTerrainTriangles[i].position, map.fTerrainTriangles[i + 1].position, map.fTerrainTriangles[i + 2].position))
 			return true;
 
-		if (pointInTriangle(landerDownRight, map.asd[i].position, map.asd[i + 1].position, map.asd[i + 2].position))
+		if (pointInTriangle(landerDownRight, map.fTerrainTriangles[i].position, map.fTerrainTriangles[i + 1].position, map.fTerrainTriangles[i + 2].position))
 			return true;
 	}
 
