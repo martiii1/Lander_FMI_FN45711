@@ -31,18 +31,19 @@ LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight)
 void LanderGame::startGame()
 {
 	//test consts
-	float gravity = 9.8f;
+	//float gravity = 9.8f;
 
 	const float maxImpactX = 0.015f;
 	const float maxImpactY = 0.1f;
 	const float maxRotation = 2.5f;
 
 
-	Lander lander(1500, 50, gravity);
+	
+	Lander lander(1500, 50, fCurrentLevel.fLevelGravity);
 	
 
 	sf::Vector2f landerMovementVec(0.f, 0.f);
-	sf::Vector2f gravityVec(0.f, gravity);
+	sf::Vector2f gravityVec(0.f, fCurrentLevel.fLevelGravity);
 
 	sf::Font font;
 	if (!font.loadFromFile("images/Arial.ttf"))
@@ -125,14 +126,16 @@ void LanderGame::startGame()
 				{
 					isRunning = true;
 					clock.restart();
+
 					// TODO lander reset sruct
+
 					lander.fLanderSprite.setPosition(0, 50); // TODO fix
 					landerMovementVec.x = 1.5f; // test
 					lander.changeRotation(-90); // test
 
-					fCurrentLevel.setSpritePosition(0, fGameHeight - fCurrentLevel.getTexure().getSize().y);
-					lander.changeGravity(gravity);
-					gravityVec.y = gravity;
+					
+					lander.changeGravity(fCurrentLevel.fLevelGravity);
+					gravityVec.y = fCurrentLevel.fLevelGravity;
 
 				}
 			}
@@ -143,13 +146,13 @@ void LanderGame::startGame()
 				tempMouseButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 
 				if (Earth.isClicked(tempMouseX,tempMouseY,tempMouseButton))
-					gravity = 9.8f;  // Level load here
+					fCurrentLevel.fLevelGravity = 9.8f;  // Level load here
 
 				if (Moon.isClicked(tempMouseX, tempMouseY, tempMouseButton))
-					gravity = 0.5f;
+					fCurrentLevel.fLevelGravity = 1.62f;
 
 				if(Mars.isClicked(tempMouseX, tempMouseY, tempMouseButton))
-					gravity = 4.5f; // Level load here
+					fCurrentLevel.fLevelGravity = 3.711f; // Level load here
 
 
 
@@ -203,7 +206,6 @@ void LanderGame::startGame()
 
 
 			//collision detection
-
 
 
 			float tempfX = lander.fLanderSprite.getPosition().x;

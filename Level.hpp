@@ -12,7 +12,6 @@ public:
 
 	void setSpritePosition(int X, int Y);
 
-private:
 	float fLevelGravity;
 };
 
