@@ -1,16 +1,11 @@
 #include "Level.hpp"
 
-Level::Level()
+
+Level::Level(unsigned int levelWidth, unsigned int levelHeight, float triangleWidth) : Terrain(levelWidth, levelHeight, triangleWidth)
 {
-	fLevelGravity = 9.8;
+	fLevelGravity = 9.8f;
 }
 
-Level::Level(unsigned int gameWidth, unsigned int gameHeight)
-{
-	fLevelGravity = 9.8;
-	fGameWidth = gameWidth;
-	fGameHeight = gameHeight;
-}
 
 
 sf::Texture Level::getTexure()

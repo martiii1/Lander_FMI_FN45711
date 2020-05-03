@@ -1,58 +1,55 @@
 #include "Terrain.hpp"
+#include "Lander.hpp"
+#include "LanderGame.hpp"
+#include <time.h> 
 
-Terrain::Terrain()
+Terrain::Terrain(unsigned int levelWidth, unsigned int levelHeight)
 {
 	if (!fTerrainTexure.loadFromFile("images/grass.png"))
 	{
 		//handle error!
 	}
 
-	fGameHeight = 1024;
-	fGameWidth = 768;
-
-
 	//TODO automate
-	fTerrainTriangles = sf::VertexArray(sf::TriangleStrip, 10);
+	fTerrainTriangles = sf::VertexArray(sf::TriangleStrip, 2);
 
 	fTerrainTriangles[0].position = sf::Vector2f(50.f, 500.f);
-	fTerrainTriangles[1].position = sf::Vector2f(50.f, fGameHeight);
-	fTerrainTriangles[2].position = sf::Vector2f(200.f, 500.f);
-	fTerrainTriangles[3].position = sf::Vector2f(200.f, fGameHeight);
-	fTerrainTriangles[4].position = sf::Vector2f(300.f, 600.f);
-	fTerrainTriangles[5].position = sf::Vector2f(300.f, fGameHeight);
-	fTerrainTriangles[6].position = sf::Vector2f(400.f, 600.f);
-	fTerrainTriangles[7].position = sf::Vector2f(400.f, fGameHeight);
-	fTerrainTriangles[8].position = sf::Vector2f(500.f, 700.f);
-	fTerrainTriangles[9].position = sf::Vector2f(500.f, fGameHeight);
+	fTerrainTriangles[1].position = sf::Vector2f(50.f, levelHeight);
 
 
 }
 
-Terrain::Terrain(unsigned short int gameWidth = 1024, unsigned short int gameHeight = 768)
+Terrain::Terrain(unsigned int levelWidth, unsigned int levelHeight, float triangleWidth)
 {
-	if (!fTerrainTexure.loadFromFile("images/grass.png"))
-	{
-		//handle error!
-	}
+		srand(time(NULL));
+
+		unsigned short int randWidth = 0;
+		unsigned short int randHeight = 500;
+		bool randElevationDirection = true; // TODO later
+
+		fTerrainTriangles = sf::VertexArray(sf::TriangleStrip, 2);
+
+		fTerrainTriangles[0].position = sf::Vector2f(50.f, 500.f);
+		fTerrainTriangles[1].position = sf::Vector2f(50.f, levelHeight);
 
 
-	fGameHeight = gameHeight;
-	fGameWidth = gameWidth;
+		float tempTriangleNumber = levelWidth / triangleWidth;
+
+		do
+		{
+			randWidth += rand() % (int)triangleWidth + (int)triangleWidth / 2 + 1; // random width from 50% lander to 100% lander !!! WILL BE CHANGED
+			randHeight -= rand() % 51; // random elevation change from 0 to 50
+			/*if (rand() % 100 > 50)
+				randElevationDirection = true;
+			else
+				randElevationDirection = false; TODO */
+
+			fTerrainTriangles.append(sf::Vector2f(randWidth, randHeight));
+			fTerrainTriangles.append(sf::Vector2f(randWidth, levelHeight));
 
 
-	//TODO automate
-	fTerrainTriangles = sf::VertexArray(sf::TriangleStrip, 10);
 
-	fTerrainTriangles[0].position = sf::Vector2f(50.f, 500.f);
-	fTerrainTriangles[1].position = sf::Vector2f(50.f, fGameHeight);
-	fTerrainTriangles[2].position = sf::Vector2f(200.f, 500.f);
-	fTerrainTriangles[3].position = sf::Vector2f(200.f, fGameHeight);
-	fTerrainTriangles[4].position = sf::Vector2f(300.f, 600.f);
-	fTerrainTriangles[5].position = sf::Vector2f(300.f, fGameHeight);
-	fTerrainTriangles[6].position = sf::Vector2f(400.f, 600.f);
-	fTerrainTriangles[7].position = sf::Vector2f(400.f, fGameHeight);
-	fTerrainTriangles[8].position = sf::Vector2f(500.f, 700.f);
-	fTerrainTriangles[9].position = sf::Vector2f(500.f, fGameHeight);
-
+		} while (randWidth < levelWidth);
 
 }
+

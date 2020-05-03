@@ -11,13 +11,13 @@
 #include "Button.hpp"
 
 
-LanderGame::LanderGame()
+LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100)
 {
 	fGameWidth = 1280;
 	fGameHeight = 720;
 }
 
-LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight)
+LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurrentLevel(1280, 720, 100.f)
 {
 	fGameWidth = gameWidth;
 	fGameHeight = gameHeight;
@@ -301,12 +301,12 @@ void LanderGame::startGame()
 
 }
 
-unsigned int LanderGame::getWidth()
+unsigned int LanderGame::getWidth() const
 {
 	return fGameWidth;
 }
 
-unsigned int LanderGame::getHeight()
+unsigned int LanderGame::getHeight() const
 {
 	return fGameHeight;
 }

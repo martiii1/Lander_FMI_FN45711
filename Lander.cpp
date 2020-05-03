@@ -105,3 +105,8 @@ void Lander::changeMass(float newMass)
 {
 	fMass = newMass;
 }
+
+float Lander::getLanderWidth()
+{
+	return (fLanderTexute.getSize().y * fLanderSprite.getScale().y);
+}

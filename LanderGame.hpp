@@ -15,8 +15,8 @@ public:
 	void startGame();
 
 
-	unsigned int getWidth();
-	unsigned int getHeight();
+	unsigned int getWidth() const;
+	unsigned int getHeight() const;
 
 private:
 	unsigned int fGameWidth;

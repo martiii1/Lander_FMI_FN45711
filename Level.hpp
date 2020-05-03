@@ -6,11 +6,9 @@
 class Level : public Terrain
 {
 public:
-	Level();
-	Level(unsigned int gameWidth, unsigned int gameHeight);
-	sf::Texture getTexure();
-
-
+	Level(unsigned int levelWidth, unsigned int levelHeight, float triangleWidth);
 	float fLevelGravity;
+
+	sf::Texture getTexure();
 };
 
