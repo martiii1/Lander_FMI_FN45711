@@ -14,6 +14,8 @@ public:
 	void EngineOff();
 	void changeGravity(float newGravity);
 	void changeRotation(int newRotation);
+	void changeThrust(float newThrust);
+	void changeMass(float newMass);
 
 	sf::Texture fLanderTexute;
 	sf::Texture fLangerWithEngineTexure;

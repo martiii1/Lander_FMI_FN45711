@@ -7,9 +7,6 @@ Terrain::Terrain()
 		//handle error!
 	}
 
-	fTerrainSprite.setTexture(fTerrainTexure);
-	//fTerrainSprite.setPosition(0, gameHeight - fTerrainTexure.getSize().y);
-
 	fGameHeight = 1024;
 	fGameWidth = 768;
 
@@ -38,8 +35,6 @@ Terrain::Terrain(unsigned short int gameWidth = 1024, unsigned short int gameHei
 		//handle error!
 	}
 
-	fTerrainSprite.setTexture(fTerrainTexure);
-	//fTerrainSprite.setPosition(0, gameHeight - fTerrainTexure.getSize().y);
 
 	fGameHeight = gameHeight;
 	fGameWidth = gameWidth;

@@ -7,10 +7,9 @@ class Level : public Terrain
 {
 public:
 	Level();
-	sf::Sprite getSprite();
+	Level(unsigned int gameWidth, unsigned int gameHeight);
 	sf::Texture getTexure();
 
-	void setSpritePosition(int X, int Y);
 
 	float fLevelGravity;
 };

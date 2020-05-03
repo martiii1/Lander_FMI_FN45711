@@ -69,7 +69,7 @@ void Lander::CalcVecs()
 	fResultantForce = fThrust - fWeight;
 	fAcceleration = fResultantForce / fMass;
 
-	fLanderThrustVector.x = std::sin(fLanderRotation * pi / 180) * fAcceleration*2.f;
+	fLanderThrustVector.x = std::sin(fLanderRotation * pi / 180) * fAcceleration * 2.f;
 	fLanderThrustVector.y = std::cos(fLanderRotation * pi / 180) * fAcceleration * (-2.f); // * 2 seems realistic but why?
 }
 
@@ -94,4 +94,14 @@ void Lander::changeRotation(int newRotation)
 {
 	fLanderRotation = newRotation;
 
+}
+
+void Lander::changeThrust(float newThrust)
+{
+	fThrust = newThrust;
+}
+
+void Lander::changeMass(float newMass)
+{
+	fMass = newMass;
 }

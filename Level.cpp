@@ -5,17 +5,15 @@ Level::Level()
 	fLevelGravity = 9.8;
 }
 
-sf::Sprite Level::getSprite()
+Level::Level(unsigned int gameWidth, unsigned int gameHeight)
 {
-	return fTerrainSprite;
+	fLevelGravity = 9.8;
+	fGameWidth = gameWidth;
+	fGameHeight = gameHeight;
 }
+
 
 sf::Texture Level::getTexure()
 {
 	return fTerrainTexure;
-}
-
-void Level::setSpritePosition(int X, int Y)
-{
-	fTerrainSprite.setPosition(X, Y);
 }
