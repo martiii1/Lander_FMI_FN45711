@@ -7,7 +7,18 @@ public:
 	Terrain(unsigned int levelWidth, unsigned int levelHeight);
 	Terrain(unsigned int levelWidth, unsigned int levelHeight, float triangleWidth);
 
-	sf::Texture fTerrainTexure;
+	sf::Texture fTerrainTexture;
+
+	sf::Texture fEarthTexture;
+	sf::Texture fMoonTexture;
+	sf::Texture fMarsTexture;
+
 	sf::VertexArray fTerrainTriangles;
 
+
+	void newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight, float triangleWidth);
+
+
+private:
+	void loadTextures();
 };

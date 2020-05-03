@@ -10,5 +10,5 @@ Level::Level(unsigned int levelWidth, unsigned int levelHeight, float triangleWi
 
 sf::Texture Level::getTexure()
 {
-	return fTerrainTexure;
+	return fTerrainTexture;
 }

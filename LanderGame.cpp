@@ -128,6 +128,7 @@ void LanderGame::startGame()
 					flander.fLanderSprite.setPosition(0, 50); // TODO fix
 					landerMovementVec.x = 1.5f; // test
 					flander.changeRotation(-90); // test
+					fCurrentLevel.newRandomTerrain(fGameWidth, fGameHeight, 100.f); // test
 
 					
 					flander.changeGravity(fCurrentLevel.fLevelGravity);
@@ -141,14 +142,23 @@ void LanderGame::startGame()
 				tempMouseY = sf::Mouse::getPosition(window).y;
 				tempMouseButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 
-				if (Earth.isClicked(tempMouseX,tempMouseY,tempMouseButton))
+				if (Earth.isClicked(tempMouseX, tempMouseY, tempMouseButton))  // SEPERATE IN FUNC OR CLASS!
+				{
 					fCurrentLevel.fLevelGravity = 9.8f;  // Level load here
+					fCurrentLevel.fTerrainTexture = fCurrentLevel.fEarthTexture;
+				}
 
 				if (Moon.isClicked(tempMouseX, tempMouseY, tempMouseButton))
+				{
 					fCurrentLevel.fLevelGravity = 1.62f;
+					fCurrentLevel.fTerrainTexture = fCurrentLevel.fMoonTexture;
+				}
 
-				if(Mars.isClicked(tempMouseX, tempMouseY, tempMouseButton))
+				if (Mars.isClicked(tempMouseX, tempMouseY, tempMouseButton))
+				{
 					fCurrentLevel.fLevelGravity = 3.711f; // Level load here
+					fCurrentLevel.fTerrainTexture = fCurrentLevel.fMarsTexture;
+				}
 
 				flander.changeGravity(fCurrentLevel.fLevelGravity);
 
@@ -185,14 +195,17 @@ void LanderGame::startGame()
 					flander.fLanderRotation = 0;
 				
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-			{
-				isRunning = false;
-			}
 			else
 			{
 				flander.fLanderRotation = (int)flander.fLanderRotation; // rounds the rotation to int
 			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+			{
+				isRunning = false;
+			}
+
+			
 
 			flander.fLanderSprite.setRotation(flander.fLanderRotation);
 			flander.CalcVecs();
@@ -278,7 +291,7 @@ void LanderGame::startGame()
 			window.draw(rotatiton);
 
 
-			window.draw(fCurrentLevel.fTerrainTriangles);
+			window.draw(fCurrentLevel.fTerrainTriangles, &fCurrentLevel.getTexure());
 
 		}
 		else
