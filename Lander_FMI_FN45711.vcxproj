@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIPlayer.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Lander.cpp" />
     <ClCompile Include="LanderGame.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="TextAndMessages.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIPlayer.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Lander.hpp" />
     <ClInclude Include="LanderGame.hpp" />

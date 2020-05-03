@@ -17,7 +17,13 @@ public:
 	void changeThrust(float newThrust);
 	void changeMass(float newMass);
 
+
 	float getLanderWidth();
+	float getAcceleration();
+	float getThrust();
+	float getRotation();
+
+
 
 	sf::Texture fLanderTexute;
 	sf::Texture fLangerWithEngineTexure;

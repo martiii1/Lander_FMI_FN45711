@@ -110,3 +110,18 @@ float Lander::getLanderWidth()
 {
 	return (fLanderTexute.getSize().y * fLanderSprite.getScale().y);
 }
+
+float Lander::getAcceleration()
+{
+	return fAcceleration;
+}
+
+float Lander::getThrust()
+{
+	return fThrust;
+}
+
+float Lander::getRotation()
+{
+	return fLanderRotation;
+}

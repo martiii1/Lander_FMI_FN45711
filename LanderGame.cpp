@@ -13,12 +13,23 @@
 
 LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100)
 {
+
+	fLander.changeThrust(1500);
+	fLander.changeMass(50);
+	fLander.changeGravity(fCurrentLevel.fLevelGravity);
+
 	fGameWidth = 1280;
 	fGameHeight = 720;
+
 }
 
 LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurrentLevel(1280, 720, 100.f)
 {
+
+	fLander.changeThrust(1500);
+	fLander.changeMass(50);
+	fLander.changeGravity(fCurrentLevel.fLevelGravity);
+
 	fGameWidth = gameWidth;
 	fGameHeight = gameHeight;
 }
@@ -32,11 +43,6 @@ void LanderGame::startGame()
 	const float maxImpactX = 0.015f;
 	const float maxImpactY = 0.1f;
 	const float maxRotation = 2.5f;
-
-
-	
-	Lander flander(1500, 50, fCurrentLevel.fLevelGravity);
-	
 
 	sf::Vector2f landerMovementVec(0.f, 0.f);
 	sf::Vector2f gravityVec(0.f, fCurrentLevel.fLevelGravity);
@@ -124,14 +130,13 @@ void LanderGame::startGame()
 					clock.restart();
 
 					// TODO lander reset sruct
-
-					flander.fLanderSprite.setPosition(0, 50); // TODO fix
+					fLander.fLanderSprite.setPosition(0, 50); // TODO fix
 					landerMovementVec.x = 1.5f; // test
-					flander.changeRotation(-90); // test
+					fLander.changeRotation(-90); // test
 					fCurrentLevel.newRandomTerrain(fGameWidth, fGameHeight, 100.f); // test
 
 					
-					flander.changeGravity(fCurrentLevel.fLevelGravity);
+					fLander.changeGravity(fCurrentLevel.fLevelGravity);
 					gravityVec.y = fCurrentLevel.fLevelGravity;
 
 				}
@@ -160,7 +165,8 @@ void LanderGame::startGame()
 					fCurrentLevel.fTerrainTexture = fCurrentLevel.fMarsTexture;
 				}
 
-				flander.changeGravity(fCurrentLevel.fLevelGravity);
+				fLander.changeGravity(fCurrentLevel.fLevelGravity);
+				//AICommands.isRunning = false;
 
 			}
 
@@ -170,34 +176,46 @@ void LanderGame::startGame()
 		{
 			float deltaT = clock.restart().asSeconds();
 
-			//detect inputs
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			AICommands.calcNextMove(fLander, landerMovementVec);
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 			{
-				flander.CalcVecs();
-				landerMovementVec += (landerMovementVec + flander.fLanderThrustVector) * deltaT * deltaT;
-				flander.EngineOn();
+				AICommands.isRunning = true;
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
+			{
+				AICommands.isRunning = false;
+			}
+
+
+			//detect inputs
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || (AICommands.up && AICommands.isRunning))
+			{
+				fLander.CalcVecs();
+				landerMovementVec += (landerMovementVec + fLander.fLanderThrustVector) * deltaT * deltaT;
+				fLander.EngineOn();
 			}
 			else
 			{
-				flander.EngineOff();
+				fLander.EngineOff();
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || (AICommands.right && AICommands.isRunning))
 			{
-				flander.fLanderRotation += 45.f * deltaT;
-				if (flander.fLanderRotation > 360.f)
-					flander.fLanderRotation = 0;
+				fLander.fLanderRotation += 45.f * deltaT;
+				if (fLander.fLanderRotation > 360.f)
+					fLander.fLanderRotation = 0;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || (AICommands.left && AICommands.isRunning))
 			{
-				flander.fLanderRotation -= 45.f * deltaT;
-				if (flander.fLanderRotation < -360.f)
-					flander.fLanderRotation = 0;
+				fLander.fLanderRotation -= 45.f * deltaT;
+				if (fLander.fLanderRotation < -360.f)
+					fLander.fLanderRotation = 0;
 				
 			}
 			else
 			{
-				flander.fLanderRotation = (int)flander.fLanderRotation; // rounds the rotation to int
+				fLander.fLanderRotation = (int)fLander.fLanderRotation; // rounds the rotation to int
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
@@ -205,27 +223,26 @@ void LanderGame::startGame()
 				isRunning = false;
 			}
 
-			
-
-			flander.fLanderSprite.setRotation(flander.fLanderRotation);
-			flander.CalcVecs();
+			fLander.fLanderSprite.setRotation(fLander.fLanderRotation);
+			fLander.CalcVecs();
 
 			landerMovementVec += (landerMovementVec + gravityVec) * deltaT * deltaT; // nearly 1-1 with real life if the lander is correctly setup
 
-			flander.fLanderSprite.move(landerMovementVec);
+			fLander.fLanderSprite.move(landerMovementVec);
 
 
 			//collision detection
 
 
-			float tempfX = flander.fLanderSprite.getPosition().x;
-			float tempfY = flander.fLanderSprite.getPosition().y;
+			float tempfX = fLander.fLanderSprite.getPosition().x;
+			float tempfY = fLander.fLanderSprite.getPosition().y;
 
 			//TODO:  TURN ON WHEN THE PLAYER IS LOW 
-			if(detectColision(sf::Vector2f(tempfX,tempfY), fCurrentLevel,(sf::Vector2f)flander.fLanderTexute.getSize()))
+
+			if(detectColision(sf::Vector2f(tempfX,tempfY), fCurrentLevel,(sf::Vector2f)fLander.fLanderTexute.getSize()))
 			{
 
-				if (landerMovementVec.x < maxImpactX && landerMovementVec.x > -maxImpactX && landerMovementVec.y < maxImpactY && flander.fLanderRotation < maxRotation)
+				if (landerMovementVec.x < maxImpactX && landerMovementVec.x > -maxImpactX && landerMovementVec.y < maxImpactY && fLander.fLanderRotation < maxRotation)
 				{
 					landerMovementVec.x = 0;
 					landerMovementVec.y = 0;
@@ -237,7 +254,7 @@ void LanderGame::startGame()
 				{
 					landerMovementVec.x = 0;
 					landerMovementVec.y = 0;
-					flander.fLanderRotation = 0;
+					fLander.fLanderRotation = 0;
 					endGameMsg.changeColor(sf::Color::Red);
 					endGameMsg.chageTxt(" You crashed! ");
 					isRunning = false;
@@ -247,8 +264,8 @@ void LanderGame::startGame()
 
 
 			//Text for testing purposes
-			int tempX = flander.fLanderSprite.getPosition().x;
-			int tempY = flander.fLanderSprite.getPosition().y;
+			int tempX = fLander.fLanderSprite.getPosition().x;
+			int tempY = fLander.fLanderSprite.getPosition().y;
 
 
 			char asdd[20];
@@ -261,7 +278,7 @@ void LanderGame::startGame()
 			text2.setString(asd);
 
 
-			asd = _itoa(flander.fLanderRotation, asdd, 10);
+			asd = _itoa(fLander.fLanderRotation, asdd, 10);
 
 			rotatiton.setString(asd);
 
@@ -282,7 +299,7 @@ void LanderGame::startGame()
 
 		if (isRunning)
 		{
-			window.draw(flander.fLanderSprite);
+			window.draw(fLander.fLanderSprite);
 
 			window.draw(text1);
 			window.draw(text2);
@@ -290,16 +307,13 @@ void LanderGame::startGame()
 			window.draw(yVelTesxt);
 			window.draw(rotatiton);
 
-
 			window.draw(fCurrentLevel.fTerrainTriangles, &fCurrentLevel.getTexure());
 
 		}
 		else
 		{
-
 			window.draw(startGameMsg.getText());
 			window.draw(endGameMsg.getText());
-
 
 			window.draw(Earth.getSprite());
 			window.draw(Moon.getSprite());

@@ -4,6 +4,7 @@
 #include "Lander.hpp"
 #include "Level.hpp"
 #include "TextAndMessages.hpp"
+#include "AIPlayer.hpp"
 
 
 class LanderGame
@@ -24,6 +25,7 @@ private:
 
 	Lander fLander;
 	Level fCurrentLevel;
+	AIPlayer AICommands;
 
 	bool detectColision(const sf::Vector2f& landerUpLeftPos, const Level& map, const sf::Vector2f& texureSize);
 	float triangleArea(const sf::Vector2f& point1, const sf::Vector2f& point2, const sf::Vector2f& point3);
