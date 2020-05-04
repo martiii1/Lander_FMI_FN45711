@@ -22,7 +22,7 @@ public:
 	float getAcceleration();
 	float getThrust();
 	float getRotation();
-
+	int getPosition();
 
 
 	sf::Texture fLanderTexute;

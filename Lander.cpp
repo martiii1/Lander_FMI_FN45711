@@ -125,3 +125,8 @@ float Lander::getRotation()
 {
 	return fLanderRotation;
 }
+
+int Lander::getPosition()
+{
+	return fLanderSprite.getPosition().y;
+}

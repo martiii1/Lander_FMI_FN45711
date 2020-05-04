@@ -15,5 +15,8 @@ public:
 
 private:
 
+	int tempRot;
+	float distanceBeforeStop;
+
 };
 

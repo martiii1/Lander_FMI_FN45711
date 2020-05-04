@@ -138,6 +138,7 @@ void LanderGame::startGame()
 					
 					fLander.changeGravity(fCurrentLevel.fLevelGravity);
 					gravityVec.y = fCurrentLevel.fLevelGravity;
+					AICommands.isRunning = false;
 
 				}
 			}
@@ -166,7 +167,7 @@ void LanderGame::startGame()
 				}
 
 				fLander.changeGravity(fCurrentLevel.fLevelGravity);
-				//AICommands.isRunning = false;
+				
 
 			}
 
