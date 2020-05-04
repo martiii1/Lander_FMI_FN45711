@@ -354,6 +354,7 @@ bool LanderGame::detectColision(const sf::Vector2f& landerUpLeftPos, const Level
 	landerDownLeft = landerUpLeftPos  + sf::Vector2f(-texureSize.x / 2.f, texureSize.y / 2.f);
 	landerDownRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, texureSize.y / 2.f);
 
+	landerDownMid = landerUpLeftPos + sf::Vector2f(0.f, texureSize.y / 2.f);
 
 	size_t numberOfVertex = map.fTerrainTriangles.getVertexCount();
 
@@ -370,6 +371,9 @@ bool LanderGame::detectColision(const sf::Vector2f& landerUpLeftPos, const Level
 			return true;
 
 		if (pointInTriangle(landerDownRight, map.fTerrainTriangles[i].position, map.fTerrainTriangles[i + 1].position, map.fTerrainTriangles[i + 2].position))
+			return true;
+
+		if (pointInTriangle(landerDownMid, map.fTerrainTriangles[i].position, map.fTerrainTriangles[i + 1].position, map.fTerrainTriangles[i + 2].position))
 			return true;
 	}
 
