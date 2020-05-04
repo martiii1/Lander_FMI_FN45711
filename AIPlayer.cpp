@@ -7,47 +7,81 @@ AIPlayer::AIPlayer()
 	left = false;
 	right = false;
 	up = false;
+	tempRot = 0;
+	distanceBeforeStop = 0;
+	fXSpeed;
+	fYspeed;
+	distanceBeforeStop = 0;
+	distanceToGround = 0;
 }
 
 
-#define MIN_ERROR_SPEED 0.005f
+#define AVERAGE_ERROR_SPEED 0.03f
+#define MIN_ERROR_SPEED 0.0005f
 void AIPlayer::calcNextMove(Lander &lander, sf::Vector2f &movementVec)
 {
 	tempRot = (int)lander.getRotation();
+	fXSpeed = movementVec.x;
+	fYspeed = movementVec.y;
 
-	left = false;
-	right = false;
+	stopSidewaysMotion();
+
+
+
+}
+
+#define EPSILON 0.001f
+void AIPlayer::stopSidewaysMotion()
+{
+	stopRightMotion();
+	stopLeftMotion();
+
+	suicideBurn();
+	
+	
 	//up = false;
+	//right = false;
+	//left = false;
 
-	if (movementVec.x > MIN_ERROR_SPEED)						// kill sidways motion
+	if(fXSpeed < EPSILON)
+		turnStraightUp();
+
+	return;
+}
+
+void AIPlayer::turnStraightUp()
+{
+	if (tempRot != 0)
 	{
-		if (tempRot == -90 || tempRot == 270)
+		if (tempRot > 180 && tempRot > -180)
 		{
-			up = true;
+			right = false;
+			left = true;
 			return;
 		}
 		else
 		{
-			if (tempRot < 90 && tempRot > -90)
-			{
-				left = true;
-				return;
-			}
-			else
-			{
-				right = true;
-				return;
-			}
-
+			left = false;
+			right = true;
+			return;
 		}
-
 	}
-	else if (movementVec.x < -MIN_ERROR_SPEED)					// kill sidways motion
+
+	right = false;
+	left = false;
+}
+
+bool AIPlayer::stopLeftMotion()
+{
+
+	if (fXSpeed < -AVERAGE_ERROR_SPEED)					// LEFT motion big change
 	{
 		if (tempRot == 90 || tempRot == -270)
 		{
+			right = false;
+			left = false;
 			up = true;
-			return;
+			return false;
 		}
 		else
 		{
@@ -55,61 +89,163 @@ void AIPlayer::calcNextMove(Lander &lander, sf::Vector2f &movementVec)
 
 			if (tempRot < -90 && tempRot > -270)
 			{
+				left = false;
+				right = true;
+				return false;
+			}
+			else
+			{
 				right = false;
 				left = true;
-				return;
+				return false;
+			}
+		}
+	}
+	else if (fXSpeed < -MIN_ERROR_SPEED)					// LEFT motion minor change
+	{
+		if (tempRot == 10 || tempRot == -350)
+		{
+			right = false;
+			left = false;
+			up = true;
+			return false;
+		}
+		else
+		{
+			up = false;
+
+			if (tempRot < 190 && tempRot > 10)
+			{
+				right = false;
+				left = true;
+				return false;
 			}
 			else
 			{
 				left = false;
 				right = true;
-				return;
+				return false;
 			}
 		}
 	}
-	else											// suicide burn preparation
+	else
 	{
-		up = false;
+		return true;
+	}
 
-		if (tempRot < 0)
-		{
-			left = false;
-			right = true;
-			return;
-		}
-		else if (tempRot > 0)
+}
+
+bool AIPlayer::stopRightMotion()
+{
+	if (fXSpeed > AVERAGE_ERROR_SPEED)						// RIGHT motion big change
+	{
+		if (tempRot == -90 || tempRot == 270)
 		{
 			right = false;
-			left = true;
-			return;
+			left = false;
+			up = true;
+			return false;
 		}
-
-		if (tempRot == 0)							// suicide burn
+		else
 		{
-			distanceBeforeStop = (movementVec.y * movementVec.y) / (lander.getAcceleration() * 2.f); // FIX !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			up = false;
 
-			if (distanceBeforeStop >= 0.035f)
+			if (tempRot < 90 && tempRot > -90)
 			{
-				if (movementVec.y > 0.1f)
-				{
-					up = true;
-					return;
-				}
-				else
-				{
-					up = false;
-					return;
-				}
+				right = false;
+				left = true;
+				return false;
 			}
 			else
 			{
-				up = false;
-				return;
+				left = false;
+				right = true;
+				return false;
 			}
-		}
-			
 
+		}
 
 	}
+	else if (fXSpeed > MIN_ERROR_SPEED)						// RIGHT minor motion minor change
+	{
+		if (tempRot == -10 || tempRot == 350)
+		{
+			right = false;
+			left = false;
+			up = true;
+			return false;
+		}
+		else
+		{
+			up = false;
+
+			if (tempRot < 170 && tempRot > -10)
+			{
+				right = false;
+				left = true;
+				return false;
+			}
+			else
+			{
+				left = false;
+				right = true;
+				return false;
+			}
+
+		}
+
+	}
+	else
+	{
+		return true;
+	}
+
+}
+
+void AIPlayer::suicideBurn()
+{
+	//if (1)
+	//{
+	//	up = false;
+
+	//	if (tempRot < 0)
+	//	{
+	//		left = false;
+	//		right = true;
+	//		return;
+	//	}
+	//	else if (tempRot > 0)
+	//	{
+	//		right = false;
+	//		left = true;
+	//		return;
+	//	}
+
+	//	if (tempRot == 0)							// suicide burn
+	//	{
+	//		distanceBeforeStop = (movementVec.y * movementVec.y) / (lander.getAcceleration() * 2.f); // FIX !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	//		if (distanceBeforeStop >= 0.035f)
+	//		{
+	//			if (movementVec.y > 0.1f)
+	//			{
+	//				up = true;
+	//				return;
+	//			}
+	//			else
+	//			{
+	//				up = false;
+	//				return;
+	//			}
+	//		}
+	//		else
+	//		{
+	//			up = false;
+	//			return;
+	//		}
+	//	}
+	//}
+
+
 }
 

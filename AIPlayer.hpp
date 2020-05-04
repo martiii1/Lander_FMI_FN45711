@@ -16,7 +16,19 @@ public:
 private:
 
 	int tempRot;
+	float fXSpeed;
+	float fYspeed;
 	float distanceBeforeStop;
+	float distanceToGround;
+
+	void stopSidewaysMotion();
+
+	void turnStraightUp();
+
+	bool stopLeftMotion();
+	bool stopRightMotion();
+
+	void suicideBurn();
 
 };
 
