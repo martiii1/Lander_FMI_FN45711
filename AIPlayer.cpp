@@ -23,10 +23,9 @@ void AIPlayer::calcNextMove(Lander &lander, sf::Vector2f &movementVec)
 	tempRot = (int)lander.getRotation();
 	fXSpeed = movementVec.x;
 	fYspeed = movementVec.y;
-
+	
 	stopSidewaysMotion();
-
-
+	
 
 }
 

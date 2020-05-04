@@ -346,11 +346,14 @@ bool LanderGame::detectColision(const sf::Vector2f& landerUpLeftPos, const Level
 	sf::Vector2f landerDownLeft;
 	sf::Vector2f landerDownRight;
 
+	sf::Vector2f landerDownMid;
 
-	landerUpLeft = landerUpLeftPos + sf::Vector2f(-texureSize.x/2.f, -texureSize.y/2);
-	landerUpRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, -texureSize.y / 2);
-	landerDownLeft = landerUpLeftPos  + sf::Vector2f(-texureSize.x / 2.f, texureSize.y / 2);
-	landerDownRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, texureSize.y / 2);
+
+	landerUpLeft = landerUpLeftPos + sf::Vector2f(-texureSize.x / 2.f, -texureSize.y/ 2.f);
+	landerUpRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, -texureSize.y / 2.f);
+	landerDownLeft = landerUpLeftPos  + sf::Vector2f(-texureSize.x / 2.f, texureSize.y / 2.f);
+	landerDownRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, texureSize.y / 2.f);
+
 
 	size_t numberOfVertex = map.fTerrainTriangles.getVertexCount();
 
