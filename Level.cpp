@@ -12,3 +12,8 @@ sf::Texture Level::getTexure()
 {
 	return fTerrainTexture;
 }
+
+void Level::changeScaleFactor(float newScaleFactor)
+{
+	fScaleFactor = newScaleFactor;
+}

@@ -22,6 +22,7 @@ Lander::Lander()
 	fAcceleration = fResultantForce / fMass;
 
 	fLanderTexute.setSmooth(true);
+	fLangerWithEngineTexure.setSmooth(true);
 	fLanderSprite.setTexture(fLanderTexute);
 	fLanderSprite.setOrigin(sf::Vector2f(fLanderSprite.getTexture()->getSize().x / 2, fLanderSprite.getTexture()->getSize().y / 2));
 

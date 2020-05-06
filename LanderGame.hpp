@@ -61,7 +61,9 @@ private:
 	// is the game running bool
 	bool isRunning;
 
-	sf::RenderWindow window; // crating a window
+	//window and scale
+	sf::RenderWindow window;
+	float scaleFactor;
 	sf::View view1;
 	sf::View view2;
 

@@ -15,6 +15,7 @@ Terrain::Terrain(unsigned int levelWidth, unsigned int levelHeight)
 
 	fTerrainTriangles[0].position = sf::Vector2f(50.f, 500.f);
 	fTerrainTriangles[1].position = sf::Vector2f(50.f, levelHeight);
+	fScaleFactor = 1.f;
 
 
 }
@@ -24,7 +25,6 @@ Terrain::Terrain(unsigned int levelWidth, unsigned int levelHeight, float triang
 		loadTextures();
 
 		newRandomTerrain(levelWidth, levelHeight, triangleWidth);
-
 }
 
 void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight, float triangleWidth)
@@ -32,21 +32,19 @@ void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight
 	srand(time(NULL));
 
 	unsigned short int randWidth = 0;
-	unsigned short int randHeight = 500;
+	unsigned short int randHeight = 600;
 
 	fTerrainTriangles.clear();
 
 	fTerrainTriangles = sf::VertexArray(sf::TriangleStrip, 2);
 
-	fTerrainTriangles[0].position = sf::Vector2f(0.f, 500.f);
+	fTerrainTriangles[0].position = sf::Vector2f(0.f, randHeight);
 	fTerrainTriangles[1].position = sf::Vector2f(0.f, levelHeight);
 
 
-	float tempTriangleNumber = levelWidth / triangleWidth;
 
 	do
 	{
-		
 		if (randHeight < levelHeight * 0.1f)
 		{
 			randHeight += rand() % 51; // random elevation change from 0 to 50
@@ -65,12 +63,13 @@ void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight
 
 		randWidth += rand() % (int)triangleWidth + (int)triangleWidth / 2 + 1; // random width from 50% lander to 100% lander !!! WILL BE CHANGED
 
-		fTerrainTriangles.append(sf::Vector2f(randWidth, randHeight));
-		fTerrainTriangles.append(sf::Vector2f(randWidth, levelHeight));
+
+		fTerrainTriangles.append(sf::Vector2f(randWidth * fScaleFactor, randHeight ));
+		fTerrainTriangles.append(sf::Vector2f(randWidth * fScaleFactor, levelHeight));
 
 
 
-	} while (randWidth < levelWidth);
+	} while (randWidth * fScaleFactor < levelWidth);
 }
 
 void Terrain::loadTextures()

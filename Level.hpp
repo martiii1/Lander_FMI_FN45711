@@ -11,5 +11,7 @@ public:
 	float fLevelGravity;
 
 	sf::Texture getTexure();
+
+	void changeScaleFactor(float newScaleFactor);
 };
 

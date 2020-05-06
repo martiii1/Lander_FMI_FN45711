@@ -26,7 +26,6 @@ LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100)
 	//vector zeriong
 	landerMovementVec = sf::Vector2f(0.f, 0.f);
 	gravityVec = sf::Vector2f(0.f, fCurrentLevel.fLevelGravity);
-	window.setVerticalSyncEnabled(true); // fps limmiter
 	isRunning = false;
 
 
@@ -45,13 +44,12 @@ LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurre
 	// Default game settings
 	maxImpactX = 0.015f;
 	maxImpactY = 0.1f;
-	maxRotation = 2.5f;
+	maxRotation = 3.f;
 	NUMBER_MULTYPLIER = 1000.f;
 
 	//vector zeriong
 	landerMovementVec = sf::Vector2f(0.f, 0.f);
 	gravityVec = sf::Vector2f(0.f, fCurrentLevel.fLevelGravity);
-	window.setVerticalSyncEnabled(true); // fps limmiter
 	isRunning = false;
 
 }
@@ -114,6 +112,11 @@ void LanderGame::startGame()
 
 	view1 = window.getDefaultView();
 
+	scaleFactor = 0.5;
+	fCurrentLevel.changeScaleFactor(scaleFactor);
+	
+	
+	fLander.fLanderSprite.scale(scaleFactor, scaleFactor);
 	while (window.isOpen())
 	{
 		if(!isRunning)
@@ -133,11 +136,11 @@ void LanderGame::startGame()
 			{
 				AICommands.isRunning = false;
 
-				view1.zoom(0.5f);
+				view1.zoom(1.01f);
 				window.setView(view1);
 
 				// restore the default view
-				window.setView(window.getDefaultView());
+				//window.setView(window.getDefaultView());
 			}
 
 
@@ -300,12 +303,20 @@ bool LanderGame::detectColision(const sf::Vector2f& landerUpLeftPos, const Level
 	sf::Vector2f landerDownMid;
 
 
-	landerUpLeft = landerUpLeftPos + sf::Vector2f(-texureSize.x / 2.f, -texureSize.y/ 2.f);
-	landerUpRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, -texureSize.y / 2.f);
-	landerDownLeft = landerUpLeftPos  + sf::Vector2f(-texureSize.x / 2.f, texureSize.y / 2.f);
-	landerDownRight = landerUpLeftPos + sf::Vector2f(texureSize.x / 2.f, texureSize.y / 2.f);
+	landerUpLeft.x = landerUpLeftPos.x + (-texureSize.x) * fLander.fLanderSprite.getScale().x / 2.f;
+	landerUpLeft.y = landerUpLeftPos.y + (-texureSize.y) * fLander.fLanderSprite.getScale().y / 2.f;
 
-	landerDownMid = landerUpLeftPos + sf::Vector2f(0.f, texureSize.y / 2.f);
+	landerUpRight.x = landerUpLeftPos.x + (texureSize.x) * fLander.fLanderSprite.getScale().x / 2.f;
+	landerUpRight.y = landerUpLeftPos.y + (-texureSize.y) * fLander.fLanderSprite.getScale().y / 2.f;
+
+	landerDownLeft.x = landerUpLeftPos.x + (-texureSize.x) * fLander.fLanderSprite.getScale().x / 2.f;
+	landerDownLeft.y = landerUpLeftPos.y + (texureSize.y) * fLander.fLanderSprite.getScale().y / 2.f;
+
+	landerDownRight.x = landerUpLeftPos.x + (texureSize.x) * fLander.fLanderSprite.getScale().x / 2.f;
+	landerDownRight.y = landerUpLeftPos.y + (texureSize.y) * fLander.fLanderSprite.getScale().y / 2.f;
+
+	landerDownMid.x = landerUpLeftPos.x * fLander.fLanderSprite.getScale().x;
+	landerDownMid.y = landerUpLeftPos.y + (texureSize.y) * fLander.fLanderSprite.getScale().y / 2.f;
 
 	size_t numberOfVertex = map.fTerrainTriangles.getVertexCount();
 

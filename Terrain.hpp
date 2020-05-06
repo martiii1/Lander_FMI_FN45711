@@ -15,6 +15,7 @@ public:
 
 	sf::VertexArray fTerrainTriangles;
 
+	float fScaleFactor = 1.f;
 
 	void newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight, float triangleWidth);
 
