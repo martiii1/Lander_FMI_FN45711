@@ -30,7 +30,7 @@ Lander::Lander()
 
 }
 
-Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in kg, gravity in m/s*s
+Lander::Lander(float thrust, float mass,float gravity) // Thrust in N and mass in kg, gravity in m/s*s
 {
 	
 	if (!fLanderTexute.loadFromFile("images/test1.png"))
@@ -46,9 +46,9 @@ Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in
 
 	fThrust = thrust;
 	fMass = mass;
-	fGravityAcceleration = graviy;
+	fGravityAcceleration = gravity;
 
-	fWeight = mass * graviy;
+	fWeight = mass * gravity;
 	fResultantForce = thrust - fWeight;
 	fAcceleration = fResultantForce / mass;
 
@@ -56,7 +56,6 @@ Lander::Lander(float thrust, float mass,float graviy) // Thrust in N and mass in
 	fLangerWithEngineTexure.setSmooth(true);
 
 	fLanderSprite.setTexture(fLanderTexute);
-	//fLanderSprite.setPosition(0, 0);
 	fLanderSprite.setOrigin(sf::Vector2f(fLanderSprite.getTexture()->getSize().x / 2, fLanderSprite.getTexture()->getSize().y / 2));
 
 	fLanderRotation = 0;
@@ -88,6 +87,7 @@ void Lander::EngineOff()
 void Lander::changeGravity(float newGravity)
 {
 	fGravityAcceleration = newGravity;
+	fWeight = fMass * newGravity;
 }
 
 void Lander::changeRotation(int newRotation)

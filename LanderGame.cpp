@@ -17,9 +17,22 @@ LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100)
 	fGameWidth = 1280;
 	fGameHeight = 720;
 
+	// Default game settings
+	maxImpactX = 0.015f;
+	maxImpactY = 0.1f;
+	maxRotation = 2.5f;
+	NUMBER_MULTYPLIER = 1000.f;
+
+	//vector zeriong
+	landerMovementVec = sf::Vector2f(0.f, 0.f);
+	gravityVec = sf::Vector2f(0.f, fCurrentLevel.fLevelGravity);
+	window.setVerticalSyncEnabled(true); // fps limmiter
+	isRunning = false;
+
+
 }
 
-LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurrentLevel(1280, 720, 100.f)
+LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurrentLevel(gameWidth, gameHeight, 100.f)
 {
 
 	fLander.changeThrust(1500);
@@ -28,16 +41,27 @@ LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurre
 
 	fGameWidth = gameWidth;
 	fGameHeight = gameHeight;
+
+	// Default game settings
+	maxImpactX = 0.015f;
+	maxImpactY = 0.1f;
+	maxRotation = 2.5f;
+	NUMBER_MULTYPLIER = 1000.f;
+
+	//vector zeriong
+	landerMovementVec = sf::Vector2f(0.f, 0.f);
+	gravityVec = sf::Vector2f(0.f, fCurrentLevel.fLevelGravity);
+	window.setVerticalSyncEnabled(true); // fps limmiter
+	isRunning = false;
+
 }
 
 
 void LanderGame::startGame()
 {
-	landerMovementVec = sf::Vector2f(0.f, 0.f);
-	gravityVec = sf::Vector2f(0.f, fCurrentLevel.fLevelGravity);
-
 	if (!font.loadFromFile("images/Arial.ttf"))
 		return;
+	
 
 	TextAndMessages startGameMsg(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
 	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 6, sf::Color::White);
@@ -86,11 +110,13 @@ void LanderGame::startGame()
 	MarsButton.setPos();
 
 	window.create(sf::VideoMode(fGameWidth, fGameHeight), "Lander");
-	window.setVerticalSyncEnabled(true); // fps limmiter
+	window.setVerticalSyncEnabled(true);
+
+	view1 = window.getDefaultView();
 
 	while (window.isOpen())
 	{
-		while (window.pollEvent(event))
+		if(!isRunning)
 			openEventEventWindow();
 
 		if (isRunning)
@@ -106,6 +132,12 @@ void LanderGame::startGame()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
 			{
 				AICommands.isRunning = false;
+
+				view1.zoom(0.5f);
+				window.setView(view1);
+
+				// restore the default view
+				window.setView(window.getDefaultView());
 			}
 
 
@@ -203,11 +235,11 @@ void LanderGame::startGame()
 			rotatiton.setString(asd);
 
 
-			tempX = landerMovementVec.x * 1000;
+			tempX = landerMovementVec.x * NUMBER_MULTYPLIER;
 			asd = _itoa(tempX, asdd, 10);
 			xVelTesxt.setString(asd);
 
-			tempY = landerMovementVec.y * 1000;
+			tempY = landerMovementVec.y * NUMBER_MULTYPLIER;
 			asd = _itoa(tempY, asdd, 10);
 			yVelTesxt.setString(asd);
 
@@ -328,6 +360,7 @@ bool LanderGame::pointInTriangle(const sf::Vector2f& point, const sf::Vector2f& 
 
 void LanderGame::openEventEventWindow()
 {
+	while (window.pollEvent(event))
 	{
 		// if the window is closed or escape key pressed
 		if ((event.type == sf::Event::Closed) ||
@@ -345,9 +378,9 @@ void LanderGame::openEventEventWindow()
 				isRunning = true;
 				clock.restart();
 
-				// TODO lander reset sruct
+				// TODO lander reset
 				fLander.fLanderSprite.setPosition(0, 50); // TODO fix
-				landerMovementVec.x = 1500 / NUMBER_MULTYPLIER;
+				landerMovementVec.x = 1.5f;
 
 				fLander.changeRotation(-90);
 
@@ -390,6 +423,5 @@ void LanderGame::openEventEventWindow()
 		}
 
 	}
-
 }
 

@@ -27,7 +27,7 @@ private:
 	unsigned int fGameHeight;
 
 	// + multyplier for the displayed numbers
-	const float NUMBER_MULTYPLIER = 1000.f;
+	float NUMBER_MULTYPLIER = 1000.f;
 
 	// Main objects
 	Lander fLander;
@@ -44,9 +44,9 @@ private:
 	sf::Vector2f gravityVec;
 
 	// Default game settings
-	const float maxImpactX = 0.015f;
-	const float maxImpactY = 0.1f;
-	const float maxRotation = 2.5f;
+	float maxImpactX;
+	float maxImpactY;
+	float maxRotation;
 	
 
 	// temp variables
@@ -59,10 +59,12 @@ private:
 	bool tempMouseButton;
 
 	// is the game running bool
-	bool isRunning = false;
+	bool isRunning;
 
 	sf::RenderWindow window; // crating a window
-	//window.setVerticalSyncEnabled(true); // fps limmiter
+	sf::View view1;
+	sf::View view2;
+
 
 	sf::Event event;
 	sf::Font font;
