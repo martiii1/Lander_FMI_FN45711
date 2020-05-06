@@ -6,8 +6,10 @@ class Button
 {
 
 public:
+	Button();
 	Button(const char* notPressedImage,const char* pressedImage, float positionX, float positionY);
 	
+	void create(const char* notPressedImage, const char* pressedImage, float positionX, float positionY);
 	void setPos();
 
 	sf::Sprite getSprite();

@@ -1,6 +1,11 @@
 #include "Button.hpp"
 
 
+Button::Button()
+{
+
+}
+
 Button::Button(const char* notPressedImage, const char* pressedImage, float positionX, float positionY)
 {
 	if (!fNotPressedTexure.loadFromFile(notPressedImage))
@@ -23,6 +28,29 @@ Button::Button(const char* notPressedImage, const char* pressedImage, float posi
 	fPositionX = positionX;
 	fPositionY = positionY;
 
+}
+
+void Button::create(const char* notPressedImage, const char* pressedImage, float positionX, float positionY)
+{
+	if (!fNotPressedTexure.loadFromFile(notPressedImage))
+	{
+		//handle error!
+	}
+
+	if (!fPressedTexure.loadFromFile(pressedImage))
+	{
+		//handle error!
+	}
+
+	fSpriteSizeX = fNotPressedTexure.getSize().x;
+	fSpriteSizeY = fNotPressedTexure.getSize().y;
+
+
+	fNotPressedButtonSprite.setTexture(fNotPressedTexure);
+	fPressedButtonSprite.setTexture(fPressedTexure);
+
+	fPositionX = positionX;
+	fPositionY = positionY;
 }
 
 void Button::setPos()

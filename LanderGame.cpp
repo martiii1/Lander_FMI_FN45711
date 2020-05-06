@@ -6,10 +6,6 @@
 #include <sstream>
 #include <iostream>
 
-#include "Lander.hpp"
-#include "Terrain.hpp"
-#include "Button.hpp"
-
 
 LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100)
 {
@@ -37,23 +33,14 @@ LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurre
 
 void LanderGame::startGame()
 {
-	//test consts
-	//float gravity = 9.8f;
+	landerMovementVec = sf::Vector2f(0.f, 0.f);
+	gravityVec = sf::Vector2f(0.f, fCurrentLevel.fLevelGravity);
 
-	const float maxImpactX = 0.015f;
-	const float maxImpactY = 0.1f;
-	const float maxRotation = 2.5f;
-
-	sf::Vector2f landerMovementVec(0.f, 0.f);
-	sf::Vector2f gravityVec(0.f, fCurrentLevel.fLevelGravity);
-
-	sf::Font font;
 	if (!font.loadFromFile("images/Arial.ttf"))
 		return;
 
 	TextAndMessages startGameMsg(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
 	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 6, sf::Color::White);
-
 
 
 	sf::Text text1;
@@ -87,95 +74,28 @@ void LanderGame::startGame()
 	yVelTesxt.setPosition(600.f, 50.f);
 	yVelTesxt.setFillColor(sf::Color::White);
 
-
-	sf::Clock clock;
-	bool isRunning = false;
-
-	float tempMouseX;
-	float tempMouseY;
-	bool tempMouseButton;
+	isRunning = false;
 
 
-	Button Earth("images/earth.png", "images/earthP.png", fGameWidth / 8.f * 2, fGameHeight / 2.f);
-	Button Moon("images/moon.png", "images/moonP.png", fGameWidth / 8.f * 3, fGameHeight / 2.f);
-	Button Mars("images/mars.png", "images/marsP.png", fGameWidth / 8.f * 4, fGameHeight / 2.f);
+	EarthButton.create("images/earth.png", "images/earthP.png", fGameWidth / 8.f * 2, fGameHeight / 2.f);
+	MoonButton.create("images/moon.png", "images/moonP.png", fGameWidth / 8.f * 3, fGameHeight / 2.f);
+	MarsButton.create("images/mars.png", "images/marsP.png", fGameWidth / 8.f * 4, fGameHeight / 2.f);
 
-	Earth.setPos();
-	Moon.setPos();
-	Mars.setPos();
+	EarthButton.setPos();
+	MoonButton.setPos();
+	MarsButton.setPos();
 
-
-	sf::RenderWindow window(sf::VideoMode(fGameWidth, fGameHeight), "Lander"); // crating a window
+	window.create(sf::VideoMode(fGameWidth, fGameHeight), "Lander");
 	window.setVerticalSyncEnabled(true); // fps limmiter
 
 	while (window.isOpen())
 	{
-		sf::Event event;
 		while (window.pollEvent(event))
-		{
-			// if the window is closed or escape key pressed
-			if ((event.type == sf::Event::Closed) ||
-				((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
-			{
-				window.close();
-				break;
-			}
-
-			// if enter is pressed the game begins/restarts
-			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
-			{
-				if (!isRunning)
-				{
-					isRunning = true;
-					clock.restart();
-
-					// TODO lander reset sruct
-					fLander.fLanderSprite.setPosition(0, 50); // TODO fix
-					landerMovementVec.x = 1.5f; // test
-					fLander.changeRotation(-90); // test
-					fCurrentLevel.newRandomTerrain(fGameWidth, fGameHeight, 100.f); // test
-
-					
-					fLander.changeGravity(fCurrentLevel.fLevelGravity);
-					gravityVec.y = fCurrentLevel.fLevelGravity;
-					AICommands.isRunning = false;
-
-				}
-			}
-			else
-			{
-				tempMouseX = sf::Mouse::getPosition(window).x;
-				tempMouseY = sf::Mouse::getPosition(window).y;
-				tempMouseButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
-
-				if (Earth.isClicked(tempMouseX, tempMouseY, tempMouseButton))  // SEPERATE IN FUNC OR CLASS!
-				{
-					fCurrentLevel.fLevelGravity = 9.8f;  // Level load here
-					fCurrentLevel.fTerrainTexture = fCurrentLevel.fEarthTexture;
-				}
-
-				if (Moon.isClicked(tempMouseX, tempMouseY, tempMouseButton))
-				{
-					fCurrentLevel.fLevelGravity = 1.62f;
-					fCurrentLevel.fTerrainTexture = fCurrentLevel.fMoonTexture;
-				}
-
-				if (Mars.isClicked(tempMouseX, tempMouseY, tempMouseButton))
-				{
-					fCurrentLevel.fLevelGravity = 3.711f; // Level load here
-					fCurrentLevel.fTerrainTexture = fCurrentLevel.fMarsTexture;
-				}
-
-				fLander.changeGravity(fCurrentLevel.fLevelGravity);
-				
-
-			}
-
-		}
+			openEventEventWindow();
 
 		if (isRunning)
 		{
-			float deltaT = clock.restart().asSeconds();
+			deltaT = clock.restart().asSeconds();
 
 			AICommands.calcNextMove(fLander, landerMovementVec);
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
@@ -216,7 +136,7 @@ void LanderGame::startGame()
 			}
 			else
 			{
-				fLander.fLanderRotation = (int)fLander.fLanderRotation; // rounds the rotation to int
+				fLander.fLanderRotation = (int)fLander.fLanderRotation; // rounds the rotation to int for easier calculations
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
@@ -227,20 +147,19 @@ void LanderGame::startGame()
 			fLander.fLanderSprite.setRotation(fLander.fLanderRotation);
 			fLander.CalcVecs();
 
-			landerMovementVec += (landerMovementVec + gravityVec) * deltaT * deltaT; // nearly 1-1 with real life if the lander is correctly setup
+			landerMovementVec += (landerMovementVec + gravityVec) * deltaT * deltaT; // nearly 1-1 with real life if the lander is correctly set up
 
 			fLander.fLanderSprite.move(landerMovementVec);
 
 
 			//collision detection
 
-
-			float tempfX = fLander.fLanderSprite.getPosition().x;
-			float tempfY = fLander.fLanderSprite.getPosition().y;
+			tempLanderX = fLander.fLanderSprite.getPosition().x;
+			tempLanderY = fLander.fLanderSprite.getPosition().y;
 
 			//TODO:  TURN ON WHEN THE PLAYER IS LOW 
 
-			if(detectColision(sf::Vector2f(tempfX,tempfY), fCurrentLevel,(sf::Vector2f)fLander.fLanderTexute.getSize()))
+			if(detectColision(sf::Vector2f(tempLanderX,tempLanderY), fCurrentLevel,(sf::Vector2f)fLander.fLanderTexute.getSize()))
 			{
 
 				if (landerMovementVec.x < maxImpactX && landerMovementVec.x > -maxImpactX && landerMovementVec.y < maxImpactY && fLander.fLanderRotation < maxRotation)
@@ -316,9 +235,9 @@ void LanderGame::startGame()
 			window.draw(startGameMsg.getText());
 			window.draw(endGameMsg.getText());
 
-			window.draw(Earth.getSprite());
-			window.draw(Moon.getSprite());
-			window.draw(Mars.getSprite());
+			window.draw(EarthButton.getSprite());
+			window.draw(MoonButton.getSprite());
+			window.draw(MarsButton.getSprite());
 
 		}
 
@@ -405,5 +324,72 @@ bool LanderGame::pointInTriangle(const sf::Vector2f& point, const sf::Vector2f& 
 		return false;
 	else
 		return true;
+}
+
+void LanderGame::openEventEventWindow()
+{
+	{
+		// if the window is closed or escape key pressed
+		if ((event.type == sf::Event::Closed) ||
+			((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+		{
+			window.close();
+			return;
+		}
+
+		// if enter is pressed the game begins/restarts
+		if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter))
+		{
+			if (!isRunning)
+			{
+				isRunning = true;
+				clock.restart();
+
+				// TODO lander reset sruct
+				fLander.fLanderSprite.setPosition(0, 50); // TODO fix
+				landerMovementVec.x = 1500 / NUMBER_MULTYPLIER;
+
+				fLander.changeRotation(-90);
+
+				fCurrentLevel.newRandomTerrain(fGameWidth, fGameHeight, 100.f); // test
+
+				fLander.changeGravity(fCurrentLevel.fLevelGravity);
+
+				gravityVec.y = fCurrentLevel.fLevelGravity;
+
+				AICommands.isRunning = false;
+
+			}
+		}
+		else
+		{
+			tempMouseX = sf::Mouse::getPosition(window).x;
+			tempMouseY = sf::Mouse::getPosition(window).y;
+
+			tempMouseButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+
+			if (EarthButton.isClicked(tempMouseX, tempMouseY, tempMouseButton))  // SEPERATE IN FUNC OR CLASS!
+			{
+				fCurrentLevel.fLevelGravity = 9.8f;  // Level load here
+				fCurrentLevel.fTerrainTexture = fCurrentLevel.fEarthTexture;
+			}
+
+			if (MoonButton.isClicked(tempMouseX, tempMouseY, tempMouseButton))
+			{
+				fCurrentLevel.fLevelGravity = 1.62f;
+				fCurrentLevel.fTerrainTexture = fCurrentLevel.fMoonTexture;
+			}
+
+			if (MarsButton.isClicked(tempMouseX, tempMouseY, tempMouseButton))
+			{
+				fCurrentLevel.fLevelGravity = 3.711f; // Level load here
+				fCurrentLevel.fTerrainTexture = fCurrentLevel.fMarsTexture;
+			}
+
+			fLander.changeGravity(fCurrentLevel.fLevelGravity);
+		}
+
+	}
+
 }
 
