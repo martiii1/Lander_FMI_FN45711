@@ -110,9 +110,13 @@ void LanderGame::startGame()
 	window.create(sf::VideoMode(fGameWidth, fGameHeight), "Lander");
 	window.setVerticalSyncEnabled(true);
 
-	view1 = window.getDefaultView();
+	//view1 = window.getDefaultView();
+	//view1.setCenter(fLander.fLanderSprite.getPosition());
+	
+	//view1.zoom(0.7f);
+	//window.setView(view2);
 
-	scaleFactor = 0.5;
+	scaleFactor = 0.3;
 	fCurrentLevel.changeScaleFactor(scaleFactor);
 	
 	
@@ -135,12 +139,6 @@ void LanderGame::startGame()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
 			{
 				AICommands.isRunning = false;
-
-				view1.zoom(1.01f);
-				window.setView(view1);
-
-				// restore the default view
-				//window.setView(window.getDefaultView());
 			}
 
 
@@ -179,6 +177,8 @@ void LanderGame::startGame()
 				isRunning = false;
 			}
 
+			// calculating vectors
+
 			fLander.fLanderSprite.setRotation(fLander.fLanderRotation);
 			fLander.CalcVecs();
 
@@ -186,6 +186,9 @@ void LanderGame::startGame()
 
 			fLander.fLanderSprite.move(landerMovementVec);
 
+			// move camera 2
+
+			view1.move(landerMovementVec);
 
 			//collision detection
 
@@ -353,6 +356,8 @@ float LanderGame::triangleArea(const sf::Vector2f& point1, const sf::Vector2f& p
 	return (det / 2.f);
 }
 
+
+#define AREA_BEFORE_CAMERA_LOCK 5000.f
 bool LanderGame::pointInTriangle(const sf::Vector2f& point, const sf::Vector2f& triangleA, const sf::Vector2f& triangleB, const sf::Vector2f& triangleC)
 {
 	float mainTriangle;
@@ -362,6 +367,11 @@ bool LanderGame::pointInTriangle(const sf::Vector2f& point, const sf::Vector2f& 
 	tempSumOfTriangles += triangleArea(triangleA, point, triangleB);
 	tempSumOfTriangles += triangleArea(triangleB, point, triangleC);
 	tempSumOfTriangles += triangleArea(triangleA, point, triangleC);
+
+	//if ((tempSumOfTriangles - mainTriangle) < AREA_BEFORE_CAMERA_LOCK)
+	//	lockViewToLander();
+	//else
+	//	setDefaultView();
 
 	if (tempSumOfTriangles > mainTriangle)
 		return false;
@@ -373,6 +383,8 @@ void LanderGame::openEventEventWindow()
 {
 	while (window.pollEvent(event))
 	{
+		window.setView(window.getDefaultView());
+
 		// if the window is closed or escape key pressed
 		if ((event.type == sf::Event::Closed) ||
 			((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
@@ -435,4 +447,3 @@ void LanderGame::openEventEventWindow()
 
 	}
 }
-

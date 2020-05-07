@@ -62,7 +62,7 @@ void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight
 		}
 
 		randWidth += rand() % (int)triangleWidth + (int)triangleWidth / 2 + 1; // random width from 50% lander to 100% lander !!! WILL BE CHANGED
-
+		
 
 		fTerrainTriangles.append(sf::Vector2f(randWidth * fScaleFactor, randHeight ));
 		fTerrainTriangles.append(sf::Vector2f(randWidth * fScaleFactor, levelHeight));
