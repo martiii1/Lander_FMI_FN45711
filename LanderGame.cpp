@@ -20,7 +20,7 @@ LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100) , UI(1280, 720)
 	// Default game settings
 	maxImpactX = 0.015f;
 	maxImpactY = 0.1f;
-	maxRotation = 2.5f;
+	maxRotation = 3.f;
 	NUMBER_MULTYPLIER = 1000.f;
 
 	//vector zeriong
@@ -72,13 +72,16 @@ void LanderGame::startGame()
 	MoonButton.setPos();
 	MarsButton.setPos();
 
-	window.create(sf::VideoMode(fGameWidth, fGameHeight), "Lander");
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 8;
+
+	window.create(sf::VideoMode(fGameWidth, fGameHeight), "Lander", sf::Style::Default, settings);
 	window.setVerticalSyncEnabled(true);
 
 	// CAMERA SETUP
 
 	mainView.reset(sf::FloatRect(0, 0, fGameWidth, fGameHeight));
-	mainView.zoom(1.f);
+	mainView.zoom(1.5f);
 	//view1.setCenter(fLander.fLanderSprite.getPosition());
 	
 	//view1.zoom(0.7f);
@@ -187,7 +190,7 @@ void LanderGame::startGame()
 				}
 			}
 
-			calculateText(fLander, landerMovementVec);
+			calculateUI(fLander, landerMovementVec);
 
 		}
 
@@ -203,8 +206,11 @@ void LanderGame::startGame()
 
 			window.setView(window.getDefaultView()); // default view render (UI and text on screen) 
 			window.draw(XVelocityText.getText());
-			window.draw(YVelocityText.getText());
-			window.draw(RotationText.getText());
+			//window.draw(YVelocityText.getText());
+			//window.draw(RotationText.getText());
+			window.draw(XVelocityRectagle);
+			window.draw(XVelocityRectagleMiddle);
+			window.draw(XVelocityPointer);
 		}
 		else
 		{
@@ -233,6 +239,7 @@ unsigned int LanderGame::getHeight() const
 {
 	return fGameHeight;
 }
+
 
 bool LanderGame::detectColision(const sf::Vector2f& landerUpLeftPos, const Level& map, const sf::Vector2f& texureSize)
 {

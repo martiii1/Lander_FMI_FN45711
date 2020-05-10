@@ -22,6 +22,7 @@ public:
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 
+
 private:
 	// Game resolution
 	unsigned int fGameWidth;
@@ -44,11 +45,13 @@ private:
 	sf::Vector2f landerMovementVec;
 	sf::Vector2f gravityVec;
 
+public:
 	// Default game settings
 	float maxImpactX;
 	float maxImpactY;
 	float maxRotation;
-	
+
+private:
 
 	// temp variables
 	float tempLanderX;

@@ -1,7 +1,11 @@
 #include "UI.hpp"
+#include "LanderGame.hpp"
 
 UI::UI(unsigned int fGameWidth, unsigned int fGameHeight)
 {
+	maxImpactX = 0.015f;
+	maxImpactY = 0.1f;
+	maxRotation = 3.f;
 
 	startGameMsg.create(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
 	endGameMsg.create("", 35, fGameWidth / 3, fGameHeight / 6, sf::Color::White);
@@ -12,31 +16,28 @@ UI::UI(unsigned int fGameWidth, unsigned int fGameHeight)
 
 	displayNumberMultyplier = 1000;
 
-	// X velocity strip
-	XVelocityRectagle.setSize(sf::Vector2f(fGameHeight / 2, fGameHeight / 2));
-	XVelocityRectagle.setFillColor(sf::Color::White);
-	XVelocityRectagle.setOutlineThickness(fGameHeight / -100.f);
-	XVelocityRectagle.setOutlineColor(sf::Color::Black);
 
+	// X Velocity Main Bar size and pos
+	velocityRectagleSize = sf::Vector2f(fGameHeight / 2.f, fGameHeight / 120.f);
+	velocityRectaglePosition = sf::Vector2f(fGameHeight * 0.05f, fGameHeight * 0.90f);
 
-	// X Middle mark
-	XVelocityRectagleMiddle.setSize(sf::Vector2f(fGameHeight / 100, fGameHeight / 200));
-	XVelocityRectagleMiddle.setFillColor(sf::Color::White);
-	XVelocityRectagleMiddle.setOutlineThickness(fGameHeight / -100.f);
-	XVelocityRectagleMiddle.setOutlineColor(sf::Color::Black);
+	// X Middle Mark Size and Position
+	velocityRectagleMiddleSize = sf::Vector2f(fGameHeight / 150.f, fGameHeight / 70.f);
+	velocityRectagleMiddlePosition = sf::Vector2f(velocityRectaglePosition.x + velocityRectagleSize.x / 2.f,
+													velocityRectaglePosition.y - velocityRectagleMiddleSize.x / 2.f);
+	
+	// X Pointer Size and Position
+	velocityPointerSize = sf::Vector2f(fGameHeight / 150.f, fGameHeight / 55.f);
+	velocityPointerPosition = velocityRectagleMiddlePosition;
 
-	// Y velocity strip
-	YVelocityRectagle.setSize(sf::Vector2f(fGameHeight / 2, fGameHeight / 2));
-	YVelocityRectagle.setFillColor(sf::Color::White);
-	YVelocityRectagle.setOutlineThickness(fGameHeight / -100.f);
-	YVelocityRectagle.setOutlineColor(sf::Color::Black);
+	
 
-
-
+	initializeRectangles(fGameWidth,fGameHeight);
+	
 
 }
 
-void UI::calculateText(Lander fLander, sf::Vector2f movementVec)
+void UI::calculateUI(Lander fLander, sf::Vector2f movementVec)
 {
 	temp = movementVec.x * displayNumberMultyplier;
 	XVelocityText.chageTxt(_itoa(temp, buffer, 10));
@@ -46,5 +47,59 @@ void UI::calculateText(Lander fLander, sf::Vector2f movementVec)
 
 	temp = fLander.getRotation();
 	RotationText.chageTxt(_itoa(temp, buffer, 10));
+
+
+	if (movementVec.x * 10 > velocityRectagleSize.x / 2.f)
+	{
+		XVelocityPointer.setFillColor(sf::Color::Red);
+		XVelocityPointer.setPosition(velocityRectaglePosition + sf::Vector2f(0, velocityRectagleSize.y));
+	}
+	else if (movementVec.x * 10.f < velocityRectagleSize.x / -2.f)
+	{
+		XVelocityPointer.setFillColor(sf::Color::Red);
+		XVelocityPointer.setPosition(velocityRectaglePosition);
+	}
+	else 
+	{
+		if ( movementVec.x < maxImpactX && movementVec.x > maxImpactX * (-1) )
+		{
+			XVelocityPointer.setFillColor(sf::Color::Green);
+		}
+		else
+		{
+			XVelocityPointer.setFillColor(sf::Color::Red);
+		}
+
+		XVelocityPointer.setPosition(XVelocityPointer.getPosition() + sf::Vector2f(movementVec.x * 10.f, 0.f));
+
+	}
+}
+
+
+void UI::initializeRectangles(unsigned int fGameWidth, unsigned int fGameHeight)
+{
+	// X Velocity Strip Body
+	XVelocityRectagle.setFillColor(sf::Color::White);
+	XVelocityRectagle.setOutlineThickness(fGameHeight / -700.f);
+	XVelocityRectagle.setOutlineColor(sf::Color::Black);
+	// X Velocity Strip Size and Position
+	XVelocityRectagle.setSize(velocityRectagleSize);
+	XVelocityRectagle.setPosition(velocityRectaglePosition);
+
+	// X Velocity Pointer
+	XVelocityPointer.setFillColor(sf::Color::Green);
+	XVelocityPointer.setOutlineThickness(fGameHeight / -1000.f);
+	XVelocityPointer.setOutlineColor(sf::Color::Black);
+	// X Velocity Pointer Size and Position
+	XVelocityPointer.setSize(velocityPointerSize);
+	XVelocityPointer.setPosition(velocityPointerPosition);
+
+	// X Middle Mark
+	XVelocityRectagleMiddle.setFillColor(sf::Color::Black);
+	XVelocityRectagleMiddle.setOutlineThickness(fGameHeight / -1000.f);
+	XVelocityRectagleMiddle.setOutlineColor(sf::Color::Black);
+	// X Middle Mark Size and Position
+	XVelocityRectagleMiddle.setSize(velocityRectagleMiddleSize);
+	XVelocityRectagleMiddle.setPosition(velocityRectagleMiddlePosition);
 
 }
