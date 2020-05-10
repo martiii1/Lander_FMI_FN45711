@@ -110,13 +110,16 @@ void LanderGame::startGame()
 	window.create(sf::VideoMode(fGameWidth, fGameHeight), "Lander");
 	window.setVerticalSyncEnabled(true);
 
-	//view1 = window.getDefaultView();
+	// CAMERA SETUP
+
+	view1.reset(sf::FloatRect(0, 0, fGameWidth, fGameHeight));
+	view1.zoom(1.5f);
 	//view1.setCenter(fLander.fLanderSprite.getPosition());
 	
 	//view1.zoom(0.7f);
 	//window.setView(view2);
 
-	scaleFactor = 0.3;
+	scaleFactor = 1;
 	fCurrentLevel.changeScaleFactor(scaleFactor);
 	
 	
@@ -188,7 +191,8 @@ void LanderGame::startGame()
 
 			// move camera 2
 
-			view1.move(landerMovementVec);
+			view1.setCenter(fLander.fLanderSprite.getPosition());
+			window.setView(view1);
 
 			//collision detection
 

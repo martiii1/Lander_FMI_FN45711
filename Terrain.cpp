@@ -69,7 +69,7 @@ void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight
 
 
 
-	} while (randWidth * fScaleFactor < levelWidth);
+	} while (randWidth * fScaleFactor < levelWidth * 10); // TODO CHANGE THE 10 !!!
 }
 
 void Terrain::loadTextures()
