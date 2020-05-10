@@ -49,15 +49,15 @@ void UI::calculateUI(Lander fLander, sf::Vector2f movementVec)
 	RotationText.chageTxt(_itoa(temp, buffer, 10));
 
 
-	if (movementVec.x * 10 > velocityRectagleSize.x / 2.f)
+	if (velocityPointerPosition.x + movementVec.x * 100.f > velocityRectaglePosition.x + velocityRectagleSize.x)
 	{
 		XVelocityPointer.setFillColor(sf::Color::Red);
-		XVelocityPointer.setPosition(velocityRectaglePosition + sf::Vector2f(0, velocityRectagleSize.y));
+		XVelocityPointer.setPosition(velocityPointerPosition + sf::Vector2f(velocityRectagleSize.x / 2.f, 0.f));
 	}
-	else if (movementVec.x * 10.f < velocityRectagleSize.x / -2.f)
+	else if (velocityPointerPosition.x + movementVec.x * 100.f < velocityRectaglePosition.x )
 	{
 		XVelocityPointer.setFillColor(sf::Color::Red);
-		XVelocityPointer.setPosition(velocityRectaglePosition);
+		XVelocityPointer.setPosition(velocityPointerPosition - sf::Vector2f(velocityRectagleSize.x / 2.f, 0.f));
 	}
 	else 
 	{
@@ -70,7 +70,7 @@ void UI::calculateUI(Lander fLander, sf::Vector2f movementVec)
 			XVelocityPointer.setFillColor(sf::Color::Red);
 		}
 
-		XVelocityPointer.setPosition(XVelocityPointer.getPosition() + sf::Vector2f(movementVec.x * 10.f, 0.f));
+		XVelocityPointer.setPosition(sf::Vector2f(velocityPointerPosition.x + movementVec.x * 100.f, velocityPointerPosition.y));
 
 	}
 }
