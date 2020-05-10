@@ -139,6 +139,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TextAndMessages.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIPlayer.hpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Level.hpp" />
     <ClInclude Include="Terrain.hpp" />
     <ClInclude Include="TextAndMessages.hpp" />
+    <ClInclude Include="UI.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

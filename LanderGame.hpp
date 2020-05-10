@@ -8,9 +8,10 @@
 #include "Lander.hpp"
 #include "Terrain.hpp"
 #include "Button.hpp"
+#include "UI.hpp"
 
 
-class LanderGame
+class LanderGame : protected UI
 {
 public:
 	LanderGame();
@@ -64,8 +65,8 @@ private:
 	//window and scale
 	sf::RenderWindow window;
 	float scaleFactor;
-	sf::View view1;
-	sf::View view2;
+
+	sf::View mainView;
 
 
 	sf::Event event;

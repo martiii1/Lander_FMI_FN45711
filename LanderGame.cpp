@@ -7,7 +7,7 @@
 #include <iostream>
 
 
-LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100)
+LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100) , UI(1280, 720)
 {
 
 	fLander.changeThrust(1500);
@@ -31,7 +31,7 @@ LanderGame::LanderGame() : fCurrentLevel(1280, 720, 100)
 
 }
 
-LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurrentLevel(gameWidth, gameHeight, 100.f)
+LanderGame::LanderGame(unsigned int gameWidth, unsigned int gameHeight) : fCurrentLevel(gameWidth, gameHeight, 100.f) , UI(gameWidth,gameHeight)
 {
 
 	fLander.changeThrust(1500);
@@ -61,41 +61,6 @@ void LanderGame::startGame()
 		return;
 	
 
-	TextAndMessages startGameMsg(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
-	TextAndMessages endGameMsg("", 35, fGameWidth / 3, fGameHeight / 6, sf::Color::White);
-
-
-	sf::Text text1;
-	text1.setFont(font);
-	text1.setCharacterSize(20);
-	text1.setPosition(170.f, 50.f);
-	text1.setFillColor(sf::Color::White);
-
-	sf::Text text2;
-	text2.setFont(font);
-	text2.setCharacterSize(20);
-	text2.setPosition(250.f, 50.f);
-	text2.setFillColor(sf::Color::White);
-
-
-	sf::Text rotatiton;
-	rotatiton.setFont(font);
-	rotatiton.setCharacterSize(20);
-	rotatiton.setPosition(50.f, 50.f);
-	rotatiton.setFillColor(sf::Color::White);
-
-	sf::Text xVelTesxt;
-	xVelTesxt.setFont(font);
-	xVelTesxt.setCharacterSize(20);
-	xVelTesxt.setPosition(500.f, 50.f);
-	xVelTesxt.setFillColor(sf::Color::White);
-
-	sf::Text yVelTesxt;
-	yVelTesxt.setFont(font);
-	yVelTesxt.setCharacterSize(20);
-	yVelTesxt.setPosition(600.f, 50.f);
-	yVelTesxt.setFillColor(sf::Color::White);
-
 	isRunning = false;
 
 
@@ -112,8 +77,8 @@ void LanderGame::startGame()
 
 	// CAMERA SETUP
 
-	view1.reset(sf::FloatRect(0, 0, fGameWidth, fGameHeight));
-	view1.zoom(1.5f);
+	mainView.reset(sf::FloatRect(0, 0, fGameWidth, fGameHeight));
+	mainView.zoom(1.f);
 	//view1.setCenter(fLander.fLanderSprite.getPosition());
 	
 	//view1.zoom(0.7f);
@@ -191,8 +156,7 @@ void LanderGame::startGame()
 
 			// move camera 2
 
-			view1.setCenter(fLander.fLanderSprite.getPosition());
-			window.setView(view1);
+			mainView.setCenter(fLander.fLanderSprite.getPosition());
 
 			//collision detection
 
@@ -223,36 +187,7 @@ void LanderGame::startGame()
 				}
 			}
 
-
-
-			//Text for testing purposes
-			int tempX = fLander.fLanderSprite.getPosition().x;
-			int tempY = fLander.fLanderSprite.getPosition().y;
-
-
-			char asdd[20];
-			sf::String asd;
-
-			asd = _itoa(tempX, asdd, 10);
-			text1.setString(asd);
-
-			asd = _itoa(tempY, asdd, 10);
-			text2.setString(asd);
-
-
-			asd = _itoa(fLander.fLanderRotation, asdd, 10);
-
-			rotatiton.setString(asd);
-
-
-			tempX = landerMovementVec.x * NUMBER_MULTYPLIER;
-			asd = _itoa(tempX, asdd, 10);
-			xVelTesxt.setString(asd);
-
-			tempY = landerMovementVec.y * NUMBER_MULTYPLIER;
-			asd = _itoa(tempY, asdd, 10);
-			yVelTesxt.setString(asd);
-
+			calculateText(fLander, landerMovementVec);
 
 		}
 
@@ -261,16 +196,15 @@ void LanderGame::startGame()
 
 		if (isRunning)
 		{
+			window.setView(mainView); // main view render (lander sprite + terrain )
 			window.draw(fLander.fLanderSprite);
-
-			window.draw(text1);
-			window.draw(text2);
-			window.draw(xVelTesxt);
-			window.draw(yVelTesxt);
-			window.draw(rotatiton);
-
 			window.draw(fCurrentLevel.fTerrainTriangles, &fCurrentLevel.getTexure());
 
+
+			window.setView(window.getDefaultView()); // default view render (UI and text on screen) 
+			window.draw(XVelocityText.getText());
+			window.draw(YVelocityText.getText());
+			window.draw(RotationText.getText());
 		}
 		else
 		{

@@ -61,6 +61,25 @@ void TextAndMessages::changeColor(sf::Color newColor)
 	fTextMsg.setFillColor(newColor);
 }
 
+void TextAndMessages::create(const char* text, int size, unsigned int positionX, unsigned int positionY, sf::Color color)
+{
+
+	fSizeOfText = size;
+	fPositionX = positionX;
+	fPositionY = positionY;
+	fTextColor = color;
+	fText = text;
+
+	if (!fFont.loadFromFile("images/Arial.ttf"))
+		return;
+
+	fTextMsg.setFont(fFont);
+	fTextMsg.setCharacterSize(fSizeOfText);
+	fTextMsg.setPosition(fPositionX, fPositionY);
+	fTextMsg.setFillColor(fTextColor);
+	fTextMsg.setString(fText);
+}
+
 sf::Text TextAndMessages::getText()
 {
 	return fTextMsg;

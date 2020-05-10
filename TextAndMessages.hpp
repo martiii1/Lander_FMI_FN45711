@@ -12,7 +12,7 @@ public:
 	void chageSize(int size);
 	void changeColor(sf::Color newColor);
 	
-
+	void create(const char* text, int size, unsigned int positionX, unsigned int positionY, sf::Color color);
 	
 	sf::Text getText();
 

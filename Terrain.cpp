@@ -32,7 +32,7 @@ void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight
 	srand(time(NULL));
 
 	unsigned short int randWidth = 0;
-	unsigned short int randHeight = 600;
+	unsigned short int randHeight = 550;
 
 	fTerrainTriangles.clear();
 
@@ -88,6 +88,8 @@ void Terrain::loadTextures()
 	{
 		//handle error!
 	}
+
+	fEarthTexture.setSmooth(true);
 
 }
 
