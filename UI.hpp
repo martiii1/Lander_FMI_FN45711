@@ -17,9 +17,15 @@ public:
 	TextAndMessages RotationText;
 
 protected:
+	// X VELOCITY 
 	sf::RectangleShape XVelocityRectagle;
 	sf::RectangleShape XVelocityRectagleMiddle;
 	sf::RectangleShape XVelocityPointer;
+
+	// Y VELOCITY
+	sf::RectangleShape YVelocityRectagle;
+	sf::RectangleShape YVelocityRectagleMiddle;
+	sf::RectangleShape YVelocityPointer;
 
 private:
 	int temp;
@@ -29,25 +35,19 @@ private:
 	float maxImpactX;
 	float maxImpactY;
 	float maxRotation;
-
-
 	
 	sf::Vector2f velocityRectagleSize;
 	sf::Vector2f velocityRectaglePosition;
-
-	
 	sf::Vector2f velocityRectagleMiddleSize;
 	sf::Vector2f velocityRectagleMiddlePosition;
-
-
 	sf::Vector2f velocityPointerSize;
-	sf::Vector2f velocityPointerPosition;
+
+	sf::Vector2f XvelocityPointerPosition;
+	sf::Vector2f YvelocityPointerPosition;
 
 
-	sf::RectangleShape YVelocityRectagle;
-	sf::RectangleShape YVelocityRectagleMiddle;
-
-	sf::RectangleShape YVelocityPointer;
+	void XVelDriver(float movementVecX);
+	void YVelDriver(float movementVecY);
 
 	void initializeRectangles(unsigned int fGameWidth, unsigned int fGameHeight);
 

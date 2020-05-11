@@ -208,9 +208,16 @@ void LanderGame::startGame()
 			window.draw(XVelocityText.getText());
 			//window.draw(YVelocityText.getText());
 			//window.draw(RotationText.getText());
+
+			// X Tracker
 			window.draw(XVelocityRectagle);
 			window.draw(XVelocityRectagleMiddle);
 			window.draw(XVelocityPointer);
+
+			// Y Tracker
+			window.draw(YVelocityRectagle);
+			window.draw(YVelocityRectagleMiddle);
+			window.draw(YVelocityPointer);
 		}
 		else
 		{

@@ -26,9 +26,14 @@ UI::UI(unsigned int fGameWidth, unsigned int fGameHeight)
 	velocityRectagleMiddlePosition = sf::Vector2f(velocityRectaglePosition.x + velocityRectagleSize.x / 2.f,
 													velocityRectaglePosition.y - velocityRectagleMiddleSize.x / 2.f);
 	
-	// X Pointer Size and Position
 	velocityPointerSize = sf::Vector2f(fGameHeight / 150.f, fGameHeight / 55.f);
-	velocityPointerPosition = velocityRectagleMiddlePosition;
+
+	// X Pointer Position
+	XvelocityPointerPosition = velocityRectagleMiddlePosition;
+
+	// Y Pointer Position
+	YvelocityPointerPosition = sf::Vector2f(velocityRectaglePosition.x - velocityRectagleMiddleSize.x / 2,
+											velocityRectaglePosition.y - velocityRectagleSize.x / 2.f);
 
 	
 
@@ -48,20 +53,30 @@ void UI::calculateUI(Lander fLander, sf::Vector2f movementVec)
 	temp = fLander.getRotation();
 	RotationText.chageTxt(_itoa(temp, buffer, 10));
 
+	XVelDriver(movementVec.x);
+	YVelDriver(movementVec.y);
 
-	if (velocityPointerPosition.x + movementVec.x * 100.f > velocityRectaglePosition.x + velocityRectagleSize.x)
+
+
+}
+
+
+void UI::XVelDriver(float movementVecX)
+{
+
+	if (XvelocityPointerPosition.x + movementVecX * 100.f > velocityRectaglePosition.x + velocityRectagleSize.x)
 	{
 		XVelocityPointer.setFillColor(sf::Color::Red);
-		XVelocityPointer.setPosition(velocityPointerPosition + sf::Vector2f(velocityRectagleSize.x / 2.f, 0.f));
+		XVelocityPointer.setPosition(XvelocityPointerPosition + sf::Vector2f(velocityRectagleSize.x / 2.f, 0.f));
 	}
-	else if (velocityPointerPosition.x + movementVec.x * 100.f < velocityRectaglePosition.x )
+	else if (XvelocityPointerPosition.x + movementVecX * 100.f < velocityRectaglePosition.x)
 	{
 		XVelocityPointer.setFillColor(sf::Color::Red);
-		XVelocityPointer.setPosition(velocityPointerPosition - sf::Vector2f(velocityRectagleSize.x / 2.f, 0.f));
+		XVelocityPointer.setPosition(XvelocityPointerPosition - sf::Vector2f(velocityRectagleSize.x / 2.f, 0.f));
 	}
-	else 
+	else
 	{
-		if ( movementVec.x < maxImpactX && movementVec.x > maxImpactX * (-1) )
+		if (movementVecX < maxImpactX && movementVecX > maxImpactX* (-1))
 		{
 			XVelocityPointer.setFillColor(sf::Color::Green);
 		}
@@ -70,14 +85,43 @@ void UI::calculateUI(Lander fLander, sf::Vector2f movementVec)
 			XVelocityPointer.setFillColor(sf::Color::Red);
 		}
 
-		XVelocityPointer.setPosition(sf::Vector2f(velocityPointerPosition.x + movementVec.x * 100.f, velocityPointerPosition.y));
+		XVelocityPointer.setPosition(sf::Vector2f(XvelocityPointerPosition.x + movementVecX * 100.f, XvelocityPointerPosition.y));
 
 	}
 }
 
+void UI::YVelDriver(float movementVecY)
+{
+	if (YvelocityPointerPosition.y + movementVecY * 100.f < velocityRectaglePosition.y - velocityRectagleSize.x)
+	{
+		YVelocityPointer.setFillColor(sf::Color::Red);
+		YVelocityPointer.setPosition(YvelocityPointerPosition - sf::Vector2f(0.f, velocityRectagleSize.x / 2.f));
+	}
+	else if (YvelocityPointerPosition.y + movementVecY * 100.f > velocityRectaglePosition.y)
+	{
+		YVelocityPointer.setFillColor(sf::Color::Red);
+		YVelocityPointer.setPosition(YvelocityPointerPosition + sf::Vector2f(0.f, velocityRectagleSize.x / 2.f));
+	}
+	else
+	{
+		if (movementVecY < maxImpactY)
+		{
+			YVelocityPointer.setFillColor(sf::Color::Green);
+		}
+		else
+		{
+			YVelocityPointer.setFillColor(sf::Color::Red);
+		}
+
+		YVelocityPointer.setPosition(sf::Vector2f(YvelocityPointerPosition.x, YvelocityPointerPosition.y + movementVecY * 100.f));
+
+	}
+}
 
 void UI::initializeRectangles(unsigned int fGameWidth, unsigned int fGameHeight)
 {
+	//                   X TRACKER 
+
 	// X Velocity Strip Body
 	XVelocityRectagle.setFillColor(sf::Color::White);
 	XVelocityRectagle.setOutlineThickness(fGameHeight / -700.f);
@@ -92,7 +136,7 @@ void UI::initializeRectangles(unsigned int fGameWidth, unsigned int fGameHeight)
 	XVelocityPointer.setOutlineColor(sf::Color::Black);
 	// X Velocity Pointer Size and Position
 	XVelocityPointer.setSize(velocityPointerSize);
-	XVelocityPointer.setPosition(velocityPointerPosition);
+	XVelocityPointer.setPosition(XvelocityPointerPosition);
 
 	// X Middle Mark
 	XVelocityRectagleMiddle.setFillColor(sf::Color::Black);
@@ -102,4 +146,32 @@ void UI::initializeRectangles(unsigned int fGameWidth, unsigned int fGameHeight)
 	XVelocityRectagleMiddle.setSize(velocityRectagleMiddleSize);
 	XVelocityRectagleMiddle.setPosition(velocityRectagleMiddlePosition);
 
+
+	//                   Y TRACKER 
+
+	// Y Velocity Strip Body
+	YVelocityRectagle.setFillColor(sf::Color::White);
+	YVelocityRectagle.setOutlineThickness(fGameHeight / -700.f);
+	YVelocityRectagle.setOutlineColor(sf::Color::Black);
+	// Y Velocity Strip Size and Position
+	YVelocityRectagle.setSize(sf::Vector2f(velocityRectagleSize.y, velocityRectagleSize.x));
+	YVelocityRectagle.setPosition(sf::Vector2f(velocityRectaglePosition.x, velocityRectaglePosition.y - velocityRectagleSize.x));
+
+	// Y Velocity Pointer
+	YVelocityPointer.setFillColor(sf::Color::Green);
+	YVelocityPointer.setOutlineThickness(fGameHeight / -1000.f);
+	YVelocityPointer.setOutlineColor(sf::Color::Black);
+	// Y Velocity Pointer Size and Position
+	YVelocityPointer.setSize(sf::Vector2f(velocityPointerSize.y, velocityPointerSize.x));
+	YVelocityPointer.setPosition(sf::Vector2f(velocityRectaglePosition.x - velocityRectagleMiddleSize.x / 2,
+												velocityRectaglePosition.y - velocityRectagleSize.x / 2.f));
+
+	// Y Middle Mark
+	YVelocityRectagleMiddle.setFillColor(sf::Color::Black);
+	YVelocityRectagleMiddle.setOutlineThickness(fGameHeight / -1000.f);
+	YVelocityRectagleMiddle.setOutlineColor(sf::Color::Black);
+	// Y Middle Mark Size and Position
+	YVelocityRectagleMiddle.setSize(sf::Vector2f(velocityRectagleMiddleSize.y, velocityRectagleMiddleSize.x));
+	YVelocityRectagleMiddle.setPosition(sf::Vector2f(velocityRectaglePosition.x - velocityRectagleMiddleSize.x / 2,
+														velocityRectaglePosition.y - velocityRectagleSize.x / 2.f ));
 }
