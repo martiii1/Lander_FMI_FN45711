@@ -202,6 +202,7 @@ void LanderGame::startGame()
 			window.setView(mainView); // main view render (lander sprite + terrain )
 			window.draw(fLander.fLanderSprite);
 			window.draw(fCurrentLevel.fTerrainTriangles, &fCurrentLevel.getTexure());
+			window.draw(fCurrentLevel.fillerRectangle);
 
 
 			window.setView(window.getDefaultView()); // default view render (UI and text on screen) 
@@ -354,7 +355,7 @@ void LanderGame::openEventEventWindow()
 				clock.restart();
 
 				// TODO lander reset
-				fLander.fLanderSprite.setPosition(0, 50); // TODO fix
+				fLander.fLanderSprite.setPosition(fGameWidth, 50); // TODO fix
 				landerMovementVec.x = 1.5f;
 
 				fLander.changeRotation(-90);

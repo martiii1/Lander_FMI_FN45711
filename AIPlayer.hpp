@@ -14,6 +14,7 @@ public:
 	void calcNextMove(Lander& lander, sf::Vector2f& movementVec);
 
 private:
+	float maxImpactY; // add a settings class
 
 	int tempRot;
 	float fXSpeed;
@@ -21,14 +22,14 @@ private:
 	float distanceBeforeStop;
 	float distanceToGround;
 
-	void stopSidewaysMotion();
+	bool stopSidewaysMotion();
 
 	void turnStraightUp();
 
 	bool stopLeftMotion();
 	bool stopRightMotion();
 
-	void suicideBurn();
+	void finalBurn(sf::Vector2f& movementVec);
 
 };
 

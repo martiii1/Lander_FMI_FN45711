@@ -3,7 +3,7 @@
 
 UI::UI(unsigned int fGameWidth, unsigned int fGameHeight)
 {
-	maxImpactX = 0.015f;
+	maxImpactX = 0.015f; // add settings class
 	maxImpactY = 0.1f;
 	maxRotation = 3.f;
 

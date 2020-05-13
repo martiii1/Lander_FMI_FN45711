@@ -13,6 +13,8 @@ AIPlayer::AIPlayer()
 	fYspeed;
 	distanceBeforeStop = 0;
 	distanceToGround = 0;
+
+	maxImpactY = 0.1f; // add settings class
 }
 
 
@@ -24,28 +26,33 @@ void AIPlayer::calcNextMove(Lander &lander, sf::Vector2f &movementVec)
 	fXSpeed = movementVec.x;
 	fYspeed = movementVec.y;
 	
-	stopSidewaysMotion();
+	if (stopSidewaysMotion())
+	{
+		finalBurn(movementVec);
+	}
+
 	
 
 }
 
 #define EPSILON 0.001f
-void AIPlayer::stopSidewaysMotion()
+bool AIPlayer::stopSidewaysMotion()
 {
 	stopRightMotion();
 	stopLeftMotion();
 
-	suicideBurn();
-	
-	
 	//up = false;
 	//right = false;
 	//left = false;
 
-	if(fXSpeed < EPSILON)
+	if (fXSpeed < EPSILON)
+	{
 		turnStraightUp();
+		return true;
+	}
+	return false;
 
-	return;
+	
 }
 
 void AIPlayer::turnStraightUp()
@@ -201,50 +208,43 @@ bool AIPlayer::stopRightMotion()
 
 }
 
-void AIPlayer::suicideBurn()
+void AIPlayer::finalBurn(sf::Vector2f& movementVec)
 {
-	//if (1)
-	//{
-	//	up = false;
 
-	//	if (tempRot < 0)
-	//	{
-	//		left = false;
-	//		right = true;
-	//		return;
-	//	}
-	//	else if (tempRot > 0)
-	//	{
-	//		right = false;
-	//		left = true;
-	//		return;
-	//	}
+		up = false;
 
-	//	if (tempRot == 0)							// suicide burn
-	//	{
-	//		distanceBeforeStop = (movementVec.y * movementVec.y) / (lander.getAcceleration() * 2.f); // FIX !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if (tempRot < 0)
+		{
+			left = false;
+			right = true;
+			return;
+		}
+		else if (tempRot > 0)
+		{
+			right = false;
+			left = true;
+			return;
+		}
 
-	//		if (distanceBeforeStop >= 0.035f)
-	//		{
-	//			if (movementVec.y > 0.1f)
-	//			{
-	//				up = true;
-	//				return;
-	//			}
-	//			else
-	//			{
-	//				up = false;
-	//				return;
-	//			}
-	//		}
-	//		else
-	//		{
-	//			up = false;
-	//			return;
-	//		}
-	//	}
-	//}
+		if (tempRot == 0)							// suicide burn
+		{
+			//distanceBeforeStop = (movementVec.y * movementVec.y) / (lander.getAcceleration() * 2.f); // FIX !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+			//if (distanceBeforeStop >= 0.035f)
+			//{
+
+			if (movementVec.y > maxImpactY * 0.95f)
+			{
+				up = true;
+				return;
+			}
+			else
+			{
+				up = false;
+				return;
+			}
+
+		}
 
 }
 

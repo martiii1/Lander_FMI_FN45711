@@ -41,6 +41,9 @@ void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight
 	fTerrainTriangles[0].position = sf::Vector2f(0.f, randHeight);
 	fTerrainTriangles[1].position = sf::Vector2f(0.f, levelHeight);
 
+	fillerRectangle.setSize(sf::Vector2f(levelWidth * 10.f, levelHeight)); // FIX THE 10
+	fillerRectangle.setPosition(0, levelHeight);
+	fillerRectangle.setTexture(&fTerrainTexture);
 
 
 	do

@@ -14,6 +14,7 @@ public:
 	sf::Texture fMarsTexture;
 
 	sf::VertexArray fTerrainTriangles;
+	sf::RectangleShape fillerRectangle;
 
 	float fScaleFactor = 1.f;
 
