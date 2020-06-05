@@ -10,9 +10,9 @@ UI::UI(unsigned int fGameWidth, unsigned int fGameHeight)
 	startGameMsg.create(" Lander! \n Press \"enter\" to start the game", 35, fGameWidth / 4, fGameHeight / 50, sf::Color::White);
 	endGameMsg.create("", 35, fGameWidth / 3, fGameHeight / 6, sf::Color::White);
 
-	XVelocityText.create("", 20, 10.f, fGameHeight - 25, sf::Color::White);
-	YVelocityText.create("", 20, 110.f, fGameHeight - 25, sf::Color::White);
-	RotationText.create("", 20, 210.f, fGameHeight - 25, sf::Color::White);
+	XVelocityText.create("", 20.f, 10.f, fGameHeight - 25, sf::Color::White);
+	YVelocityText.create("", 20.f, 110.f, fGameHeight - 25, sf::Color::White);
+	
 
 	displayNumberMultyplier = 1000;
 
@@ -35,7 +35,7 @@ UI::UI(unsigned int fGameWidth, unsigned int fGameHeight)
 	YvelocityPointerPosition = sf::Vector2f(velocityRectaglePosition.x - velocityRectagleMiddleSize.x / 2,
 											velocityRectaglePosition.y - velocityRectagleSize.x / 2.f);
 
-	
+	RotationText.create("", 20.f, XvelocityPointerPosition.x * 0.25f, XvelocityPointerPosition.y - 25.f, sf::Color::White);
 
 	initializeRectangles(fGameWidth,fGameHeight);
 	

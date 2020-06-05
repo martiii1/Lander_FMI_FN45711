@@ -10,7 +10,6 @@ Terrain::Terrain(unsigned int levelWidth, unsigned int levelHeight)
 		//handle error!
 	}
 
-	//TODO automate
 	fTerrainTriangles = sf::VertexArray(sf::TriangleStrip, 2);
 
 	fTerrainTriangles[0].position = sf::Vector2f(50.f, 500.f);
@@ -41,30 +40,30 @@ void Terrain::newRandomTerrain(unsigned int levelWidth, unsigned int levelHeight
 	fTerrainTriangles[0].position = sf::Vector2f(0.f, randHeight);
 	fTerrainTriangles[1].position = sf::Vector2f(0.f, levelHeight);
 
-	fillerRectangle.setSize(sf::Vector2f(levelWidth * 10.f, levelHeight)); // FIX THE 10
+	fillerRectangle.setSize(sf::Vector2f(levelWidth * 10.f, levelHeight)); // TODO FIX THE 10 (magic number)
 	fillerRectangle.setPosition(0, levelHeight);
 	fillerRectangle.setTexture(&fTerrainTexture);
 
 
 	do
 	{
-		if (randHeight < levelHeight * 0.1f)
+		if (randHeight < levelHeight * 0.5f)
 		{
-			randHeight += rand() % 51; // random elevation change from 0 to 50
+			randHeight += rand() % (levelHeight / 15); // random elevation change from 0 to 50 - ish
 		}
 		else if (randHeight > levelHeight * 0.9f)
 		{
-			randHeight -= rand() % 51;
+			randHeight -= rand() % (levelHeight / 15); // TODO remove the magic numbers
 		}
 		else
 		{
 			if (rand() % 100 > 50)
-				randHeight -= rand() % 51;
+				randHeight -= rand() % (levelHeight / 15);
 			else
-				randHeight += rand() % 51;
+				randHeight += rand() % (levelHeight / 15);
 		}
 
-		randWidth += rand() % (int)triangleWidth + (int)triangleWidth / 2 + 1; // random width from 50% lander to 100% lander !!! WILL BE CHANGED
+		randWidth += (rand() % (int)triangleWidth) + (int)triangleWidth / 2 + 1; // random width from 50% lander to 150% lander !!! WILL BE CHANGED
 		
 
 		fTerrainTriangles.append(sf::Vector2f(randWidth * fScaleFactor, randHeight ));

@@ -60,7 +60,6 @@ void LanderGame::startGame()
 	if (!font.loadFromFile("images/Arial.ttf"))
 		return;
 	
-
 	isRunning = false;
 
 
@@ -206,7 +205,7 @@ void LanderGame::startGame()
 
 
 			window.setView(window.getDefaultView()); // default view render (UI and text on screen) 
-			window.draw(XVelocityText.getText());
+			window.draw(RotationText.getText());
 			//window.draw(YVelocityText.getText());
 			//window.draw(RotationText.getText());
 
