@@ -7,5 +7,5 @@
 ## Different gravity on different levels
 ![](https://i.imgur.com/6tsaKms.gif)  
 
-## Different gravity on different levels
+## Randomly generated terrain
 ![](https://i.imgur.com/QJsBkkv.gif)  
