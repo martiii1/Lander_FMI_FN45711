@@ -365,6 +365,8 @@ void LanderGame::openEventEventWindow()
 
 				gravityVec.y = fCurrentLevel.fLevelGravity;
 
+				landerMovementVec = sf::Vector2f(2, 0);
+
 				AICommands.isRunning = false;
 
 			}
